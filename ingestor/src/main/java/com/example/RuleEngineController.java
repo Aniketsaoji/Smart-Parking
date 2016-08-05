@@ -81,7 +81,8 @@ public class RuleEngineController {
     public void init(){
     	service.initialize();
     }
-
+    
+    @CrossOrigin(origins = "https://bettertraffic-test-app.run.aws-usw02-pr.ice.predix.io")
     @RequestMapping(value = "/parkingDetails", method = RequestMethod.GET)
     public String getParkingDetails() {
         return service.getParkingDetails();
