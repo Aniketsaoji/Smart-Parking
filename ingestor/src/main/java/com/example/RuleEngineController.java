@@ -25,6 +25,12 @@ public class RuleEngineController {
     public RuleEngineController(RuleEngineService service) {
         this.service = service;
     }
+    
+    @RequestMapping(value = "/getParkingEvents", method = RequestMethod.GET)
+    public void getParkingEvents() {
+        service.getParkingEvents();
+    }
+
 //
 //    /** Adds Aggregated Data to Rule Session
 //     * Requires json body of 
@@ -68,9 +74,9 @@ public class RuleEngineController {
 //     * Lists all alarms in database
 //     * @return
 //     */
-    @RequestMapping(value = "/listassets", method = RequestMethod.GET)
-    public void listDB(){
-    	service.getAssets();
+    @RequestMapping(value = "/initialize", method = RequestMethod.GET)
+    public void init(){
+    	service.initialize();
     	
     }
     

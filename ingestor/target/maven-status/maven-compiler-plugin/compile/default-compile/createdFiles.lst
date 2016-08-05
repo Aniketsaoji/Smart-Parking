@@ -3,3 +3,5 @@ com/example/RuleEngineService.class
 com/example/RuleEngineController.class
 com/example/Application.class
 com/example/em_rule_engine_alarms.class
+com/example/Event.class
+com/example/Asset.class

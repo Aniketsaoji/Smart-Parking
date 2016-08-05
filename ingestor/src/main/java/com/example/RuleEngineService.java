@@ -2,6 +2,7 @@ package com.example;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -30,19 +31,13 @@ import org.springframework.http.HttpEntity;
 @Service
 public class RuleEngineService {
 	
-	private HashMap<String, String> map = new HashMap<String, String>();
+	ArrayList<Asset> allAssets = new ArrayList<Asset>();
+	ArrayList<ParkingSpots> allLocations = new ArrayList<ParkingSpots>();
+	ArrayList<Event> events = new ArrayList<Event>();
 	
+	final String authToken = "Bearer eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiIzMjA5OTk1Yi1lMTdiLTQ4NTEtYTRiNC04Nzk0YzhkOWMxZGMiLCJzdWIiOiJhZG1pbiIsInNjb3BlIjpbImNsaWVudHMucmVhZCIsImNsaWVudHMuc2VjcmV0IiwiaWRwcy53cml0ZSIsInVhYS5yZXNvdXJjZSIsImllLXBhcmtpbmcuem9uZXMuMzczYjMwZjUtYmQ4ZS00MGE4LTlkYzItYmM3M2IyN2QzYzI4LmFkbWluIiwiY2xpZW50cy5hZG1pbiIsImllLXRyYWZmaWMuem9uZXMuMTMzM2U5OTMtZWYwZS00NGRmLWEyMTMtMjRjMTYwMzJhZDJiLnVzZXIiLCJzY2ltLnJlYWQiLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EuYWRtaW4iLCJjbGllbnRzLndyaXRlIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgudXNlciIsImlkcHMucmVhZCIsInNjaW0ud3JpdGUiXSwiY2xpZW50X2lkIjoiYWRtaW4iLCJjaWQiOiJhZG1pbiIsImF6cCI6ImFkbWluIiwiZ3JhbnRfdHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsInJldl9zaWciOiI1YzYyZThmNyIsImlhdCI6MTQ3MDQxODMwMSwiZXhwIjoxNDcwNDYxNTAxLCJpc3MiOiJodHRwczovLzE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYS5wcmVkaXgtdWFhLnJ1bi5hd3MtdXN3MDItcHIuaWNlLnByZWRpeC5pby9vYXV0aC90b2tlbiIsInppZCI6IjE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYSIsImF1ZCI6WyJhZG1pbiIsImNsaWVudHMiLCJpZHBzIiwidWFhIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgiLCJpZS10cmFmZmljLnpvbmVzLjEzMzNlOTkzLWVmMGUtNDRkZi1hMjEzLTI0YzE2MDMyYWQyYiIsInNjaW0iLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EiXX0.fJ7KadvCJ-Ez4CwrPY1CYLu7LuSAo1VyzBtyisilhnJmwSfwoyiNABcNu_FtqKIuXH_2VrDrHhDnNxActeKJGIk1hTSCHw0CzuyS0hEg5llV2ZwZUWb5cv0u5KlTItFw-esKwyFeezrtAafVKI6f2jPuQVcjnf4NCgFQNGl35dogIYojSwbvN0Ugrjcf1XTEQKX7ViMOFdtWfGV78WTcb0UFEND43J2dOW3QYFyx9KEJS63VzKktVCyk8p7jB9Jxxu3fx2b7tgKRUMsbPusUK6mYW4fPFfyrXySVbMf75Gmh-BV3mY8YNdnCHdkOBsE8Ufp4wGqphXRKtVseRPAR9Q";
 //	private static ParkingSpotsRepository repo;
 
-	/**
-	 * Initializes rule session from postgres, and connects to
-	 * aggregated data persistence in postgres.
-	 * 
-	 * @param kieContainer
-	 * @param c
-	 */
-	
-	
 	
 //	@Autowired
 //	public RuleEngineService() {
@@ -61,13 +56,49 @@ public class RuleEngineService {
 //	    
 //	    
 //	}
-
 	
-	public void getAssets(){
-		System.out.println("Getting Assets");
+	public void getParkingEvents() {
+		Date date = new Date();
+		long end = date.getTime();
+		long start = end - 15000;
 		
 		HttpHeaders header = new HttpHeaders();
-		header.add("Authorization", "Bearer eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJkMjcxOGFhZi04N2I4LTQ0YWMtYjcwZS00YjhmNGE0NGIyN2QiLCJzdWIiOiJhZG1pbiIsInNjb3BlIjpbImNsaWVudHMucmVhZCIsImNsaWVudHMuc2VjcmV0IiwiaWRwcy53cml0ZSIsInVhYS5yZXNvdXJjZSIsImllLXBhcmtpbmcuem9uZXMuMzczYjMwZjUtYmQ4ZS00MGE4LTlkYzItYmM3M2IyN2QzYzI4LmFkbWluIiwiY2xpZW50cy5hZG1pbiIsImllLXRyYWZmaWMuem9uZXMuMTMzM2U5OTMtZWYwZS00NGRmLWEyMTMtMjRjMTYwMzJhZDJiLnVzZXIiLCJzY2ltLnJlYWQiLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EuYWRtaW4iLCJjbGllbnRzLndyaXRlIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgudXNlciIsImlkcHMucmVhZCIsInNjaW0ud3JpdGUiXSwiY2xpZW50X2lkIjoiYWRtaW4iLCJjaWQiOiJhZG1pbiIsImF6cCI6ImFkbWluIiwiZ3JhbnRfdHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsInJldl9zaWciOiI1YzYyZThmNyIsImlhdCI6MTQ3MDM2OTUwOCwiZXhwIjoxNDcwNDEyNzA4LCJpc3MiOiJodHRwczovLzE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYS5wcmVkaXgtdWFhLnJ1bi5hd3MtdXN3MDItcHIuaWNlLnByZWRpeC5pby9vYXV0aC90b2tlbiIsInppZCI6IjE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYSIsImF1ZCI6WyJhZG1pbiIsImNsaWVudHMiLCJpZHBzIiwidWFhIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgiLCJpZS10cmFmZmljLnpvbmVzLjEzMzNlOTkzLWVmMGUtNDRkZi1hMjEzLTI0YzE2MDMyYWQyYiIsInNjaW0iLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EiXX0.nH5uw0CASACa1Xft1Z8Mptj8qo2huC3l5PpAtxOMwcTUPmBdba0RObahpHuPoQZ0kHolTCMtcSl_D1YE7lU5NdMlXKp4BuyyCOt4JGtE8OhPlZj1ro4cR6P1ckEE3yJ1GWa9kHFhE3fGvc-wRRo5srsmgHzxibnjfx2IRDF5t3q9yG4dhZ_vVdVUGUSrIVRZJxOkcmI3L5fI182ISO8NgvaA-PWaAoUAm_9Q4SFzz8wTxiDOAwuSlYpDe-fEuSH0xbRGAQmPBayZtH-MRE5cCXeFytZIadtF9d2PXy93RfEm8SbhOGT3GYXRuivNoNXDZ218TG_0js6voyrwUqfJiw");
+        header.add("Authorization", authToken);
+        header.add("Predix-Zone-Id", "373b30f5-bd8e-40a8-9dc2-bc73b27d3c28");
+        HttpEntity entity = new HttpEntity(header);
+        RestTemplate rest = new RestTemplate();
+        
+        for (; ; ) {
+        	for(Asset a: allAssets){
+        		System.out.println("ASSET: " + a.getAsset_id());
+        		String id = a.getAsset_id();
+        		String url = "https://ie-parking.run.aws-usw02-pr.ice.predix.io/v1/assets/"+id+"/events?assetId="+id+"&event-types=PKIN,PKOUT&start-ts=" + start + "&end-ts=" + end;
+        		String shiet = rest.exchange(url, HttpMethod.GET, entity, String.class).getBody();
+//        		JacksonJsonParser parser = new JacksonJsonParser();
+//        		Map<String, Object> parsedData = parser.parseMap(shiet);
+        		System.out.println(shiet);
+        	}
+        	start = end;
+        	end = start + 15000;
+            try {
+                //Sleep for a minute
+                System.out.println("Sleeping for a minute");
+                Thread.sleep(15000);
+
+                System.out.println("We back fam");
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+	
+	public void initialize(){
+		System.out.println("Getting Assets and locations");
+		
+		HttpHeaders header = new HttpHeaders();
+		header.add("Authorization", authToken);
 		header.add("Predix-Zone-Id", "373b30f5-bd8e-40a8-9dc2-bc73b27d3c28");
 		HttpEntity entity  = new HttpEntity(header);
 		RestTemplate rest = new RestTemplate();
@@ -90,7 +121,10 @@ public class RuleEngineService {
 			String s = ((LinkedHashMap)lnks.get("self")).get("href").toString();
 			String[] s_arr = s.split("/");
 			System.out.println("LOCATION: " + s_arr[s_arr.length - 1]);
+			ParkingSpots new_loc = new ParkingSpots();
+			new_loc.setNumeric_id(s_arr[s_arr.length - 1]);
 			
+	
 			
 			String assetLoc = rest.exchange("https://ie-parking.run.aws-usw02-pr.ice.predix.io/v1/locations/" + s_arr[s_arr.length - 1], HttpMethod.GET, entity, String.class).getBody();
 			Map<String, Object> pData = parser.parseMap(assetLoc);
@@ -103,102 +137,31 @@ public class RuleEngineService {
 			String[] ls_asset = assetURL.split("/");
 			String asset = ls_asset[ls_asset.length - 1];
 			System.out.println("ASSET: " + asset);
-			map.put(s_arr[s_arr.length - 1].toString(), asset);
-
-		}
-		ArrayList<String> assets = new ArrayList<String>();
-		for (String s: map.values()){
-			if(!assets.contains(s)){
-				assets.add(s);
-				String webs_url = "https://ie-parking.run.aws-usw02-pr.ice.predix.io/v1/assets/"+s+"/live-events?assetId="+s+"&event-types=PKIN,PKOUT";
-				String res2 = rest.exchange(webs_url, HttpMethod.GET, entity, String.class).getBody();
-				Map<String, Object> fin = parser.parseMap(res2);
-				String websocket_url = fin.get("url").toString();
-				System.out.println(websocket_url);
-				
+			new_loc.setAsset(asset);
+			Boolean found = false;
+			for(Asset a : allAssets){
+				if(a.getAsset_id().equals(asset)){
+					ArrayList<ParkingSpots> spotsForAsset = a.getLocs();
+					spotsForAsset.add(new_loc);
+					a.setLocs(spotsForAsset);
+					found = true;
+					break;
+				}
 			}
+			if(!found){
+				Asset a = new Asset();
+				ArrayList<ParkingSpots> Asset_spots = new ArrayList<ParkingSpots>();
+				Asset_spots.add(new_loc);
+				a.setLocs(Asset_spots);
+				a.setAsset_id(asset);
+				allAssets.add(a);
+			}
+			
+			allLocations.add(new_loc);
+			
 		}
     }
-		
-//    /**
-//     * Lists alarms currently in the database
-//     */
-//    public String listAll(){
-//    	HttpEntity<String> entity = new HttpEntity<String>("select * from iepems_dev.em_rule_engine_alarms");
-//		RestTemplate rest = new RestTemplate();
-//		ResponseEntity<String> resp = rest.postForEntity("https://em-data-services.run.aws-usw02-pr.ice.predix.io/runStatement", entity, String.class);
-//		return resp.getBody();
-//    }
-//    
-//    /**
-//     * Lists aggregated data currently in the Persistance database
-//     */
-//    public String listData(){
-//    	System.out.println(repo.toString());
-//    	String output = "DATABASE:\n";
-//    	if(repo.count() > 0){
-//    		for (AggregatedData m : repo.findAll()){
-//    			m.parse();
-//        		output += ("\n DB: " + m);
-//        	}
-//    	}
-//    	return output;
-//    }
-//    
-//    /**
-//     * Lists rules
-//     */
-//    public String listRules(){
-//    	String output = "RULES:\n";
-//    	if(rules.count() > 0){
-//    		for (Rule m : rules.findAll()){
-//        		output += ("\n RULE: " + m.getRuleName() + "CONTENT: " + m.getRuleContents());
-//        	}
-//    	}
-//    	return output;
-//    }
-//
-//    /**
-//     * Insert aggregated data into rule session. Also saves
-//     * Aggregated data in db, for persistence.
-//     * @param a
-//     */
-//	public void insertAggregatedData(AggregatedData a) {
-//		repo.save(a);
-//		this.ksession.insert(a);
-//		this.ksession.fireAllRules();
-//	}
-//
-//	/**
-//	 * Adds a new rule to a database and updates rule session
-//	 * @param r
-//	 */
-//	public void addrule(Rule r) {
-//		rules.save(r);
-//		addRuleToSession(r);
-//		//ksession.fireAllRules();
-//	}
-//	
-//	/**
-//	 * Deletes a rule from the database and updates the
-//	 * rule session accordingly
-//	 * @param rulename
-//	 */
-//	public void deleterule(String rulename) {
-//		rules.delete(rulename);
-//		kbase.removeKiePackage(rulename);
-//	}
-//	
-//	/**
-//	 * Helper function to add a rule to the rule session
-//	 * @param r
-//	 */
-//	private void addRuleToSession(Rule r){
-//		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-//        kbuilder.add(ResourceFactory.newReaderResource((Reader) new StringReader(r.getRuleContents())), ResourceType.DRL);
-//        kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-//
-//	}
-
-
+	
+	
+	
 }

@@ -1,29 +1,12 @@
 package com.example;
 
-import org.springframework.boot.json.JacksonJsonParser;
-
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Map;
-import java.util.Arrays;
-
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Transient;
-
-@Entity
 public class ParkingSpots {
 	
-	@Id
 	private String locationuid;
 	private float latitude;
 	private float longitude;
+	private String numeric_id;
 	private Boolean status;
-
 	private String asset;
 	
 	public float getLatitude() {
@@ -55,6 +38,12 @@ public class ParkingSpots {
 	}
 	public void setAsset(String asset) {
 		this.asset = asset;
+	}
+	public String getNumeric_id() {
+		return numeric_id;
+	}
+	public void setNumeric_id(String numeric_id) {
+		this.numeric_id = numeric_id;
 	}
 	
 	
