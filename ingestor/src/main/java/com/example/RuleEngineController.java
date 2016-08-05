@@ -1,6 +1,7 @@
 package com.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,8 @@ public class RuleEngineController {
     @Autowired
     public RuleEngineController(RuleEngineService service) {
         this.service = service;
+//        service.initialize();
+//        service.getParkingEvents();
     }
     
     @RequestMapping(value = "/getParkingEvents", method = RequestMethod.GET)
@@ -60,6 +63,7 @@ public class RuleEngineController {
 //    	return "Added rule " + r.getRuleName();
 //    }
 //    
+    @CrossOrigin(origins = "https://bettertraffic-test-app.run.aws-usw02-pr.ice.predix.io")
     @RequestMapping(value = "/events", method = RequestMethod.GET)
     public String insert(
             @RequestParam(required = true) long start,

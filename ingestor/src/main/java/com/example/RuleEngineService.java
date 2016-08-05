@@ -54,10 +54,10 @@ public class RuleEngineService {
 //	}
 	
 	public String getEvents(long start, long end){
-		String s = "{events: [";
+		String s = "{\"events\": [";
 		for(Event e: events){
 			if(e.getTs() >= start && e.getTs() <= end){
-				s += "{ts:" + e.getTs() + "," + "filled:" + e.getNum_filled() + ",open:" + e.getNum_open() + "},";
+				s += "{\"ts\":" + e.getTs() + "," + "\"filled\":" + e.getNum_filled() + ",\"open\":" + e.getNum_open() + "},";
 			}
 		}
 		s = s.substring(0, s.length()-1);
@@ -103,20 +103,25 @@ public class RuleEngineService {
             			for(ParkingSpots s: allLocations){
             				if(s.getLocationuid().equals(location_uid)){
             					if(event_type.equals("PKIN")){
-            						s.setStatus(true);
-            						Event e = new Event();
-            	        			e.setNum_filled(e.getNum_filled() + 1);
-            	        			e.setNum_open(e.getNum_open() - 1);
-            	        			e.setTs(ts);
-            	        			events.add(e);
+            						if(!s.getStatus()){
+            							s.setStatus(true);
+                						Event e = new Event();
+                						
+                	        			e.setNum_filled(Math.min(30,e.getNum_filled() + 1));
+                	        			e.setNum_open(30 - e.getNum_filled());
+                	        			e.setTs(ts);
+                	        			events.add(e);
+            						}
             					}
             					else{
-            						s.setStatus(false);
-            						Event e = new Event();
-            	        			e.setNum_filled(Math.max(0, e.getNum_filled() - 1));
-            	        			e.setNum_open(Math.min(30,e.getNum_open() + 1));
-            	        			e.setTs(ts);
-            	        			events.add(e);
+            						if(s.getStatus()){
+            							s.setStatus(false);
+                						Event e = new Event();
+                	        			e.setNum_filled(Math.max(0, e.getNum_filled() - 1));
+                	        			e.setNum_open(30 - e.getNum_filled());
+                	        			e.setTs(ts);
+                	        			events.add(e);
+            						}
             					}
             					break;
             				}
