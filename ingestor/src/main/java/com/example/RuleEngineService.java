@@ -105,9 +105,10 @@ public class RuleEngineService {
             					if(event_type.equals("PKIN")){
             						if(!s.getStatus()){
             							s.setStatus(true);
+            							Event last = events.get(events.size() - 1);
                 						Event e = new Event();
                 						
-                	        			e.setNum_filled(Math.min(30,e.getNum_filled() + 1));
+                	        			e.setNum_filled(Math.min(30,last.getNum_filled() + 1));
                 	        			e.setNum_open(30 - e.getNum_filled());
                 	        			e.setTs(ts);
                 	        			events.add(e);
@@ -116,8 +117,9 @@ public class RuleEngineService {
             					else{
             						if(s.getStatus()){
             							s.setStatus(false);
+            							Event last = events.get(events.size() - 1);
                 						Event e = new Event();
-                	        			e.setNum_filled(Math.max(0, e.getNum_filled() - 1));
+                	        			e.setNum_filled(Math.max(0, last.getNum_filled() - 1));
                 	        			e.setNum_open(30 - e.getNum_filled());
                 	        			e.setTs(ts);
                 	        			events.add(e);
@@ -155,6 +157,7 @@ public class RuleEngineService {
 		init_event.setNum_filled(0);
 		init_event.setNum_open(30);
 		init_event.setTs(date.getTime());
+		events.add(init_event);
 		
 		
 		HttpHeaders header = new HttpHeaders();
