@@ -82,8 +82,8 @@ public class RuleEngineController {
     }
 
     @RequestMapping(value = "/parkingDetails", method = RequestMethod.GET)
-    public void getParkingDetails() {
-        service.getParkingDetails();
+    public String getParkingDetails() {
+        return service.getParkingDetails();
     }
     
 //    /**

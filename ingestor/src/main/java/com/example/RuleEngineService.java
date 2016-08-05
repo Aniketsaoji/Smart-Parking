@@ -53,7 +53,7 @@ public class RuleEngineService {
 //	    
 //	}
 
-    public void getParkingDetails() {
+    public String getParkingDetails() {
         String json2Return = "{ ";
         for(ParkingSpots parkingSpots : allLocations) {
             json2Return = json2Return + parkingSpots.toJson();
@@ -61,6 +61,7 @@ public class RuleEngineService {
         }
         json2Return = json2Return + "}";
         System.out.println(json2Return);
+        return json2Return;
     }
 	
 	public String getEvents(long start, long end){
