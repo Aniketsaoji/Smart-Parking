@@ -12,7 +12,7 @@ import org.springframework.context.annotation.PropertySource;
  * @author 212572312
  *
  */
-@PropertySource("classpath:application.properties")
+//@PropertySource("classpath:application.properties")
 @SpringBootApplication
 public class Application {
 	

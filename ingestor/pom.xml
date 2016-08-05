@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ge.lighting.tools</groupId>
-    <artifactId>em-rule-engine</artifactId>
+    <artifactId>Smart-Parking</artifactId>
     <version>0.1.0</version>
     
     <properties>
@@ -38,20 +38,24 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.kie</groupId>
-			<artifactId>kie-ci</artifactId>
-			<version>${kie.version}</version>
 		</dependency>
 		<dependency>
   			<groupId>org.postgresql</groupId>
   			<artifactId>postgresql</artifactId>
   			<version>9.4-1206-jdbc42</version>
 		</dependency>
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+        </dependency>
 
     </dependencies>
 
@@ -69,11 +73,6 @@
             <id>spring-releases</id>
             <name>Spring Releases</name>
             <url>https://repo.spring.io/libs-release</url>
-        </repository>
-        <repository>
-            <id>org.jboss.repository.releases</id>
-            <name>JBoss Maven Release Repository</name>
-            <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
         </repository>
     </repositories>
 

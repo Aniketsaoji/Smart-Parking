@@ -1,8 +1,5 @@
-/Users/212572312/Documents/workspace-sts-3.7.3.RELEASE/em-rule-engine/src/main/java/com/example/em_rule_engine_alarms.java
-/Users/212572312/Documents/workspace-sts-3.7.3.RELEASE/em-rule-engine/src/main/java/com/example/RuleEngineService.java
-/Users/212572312/Documents/workspace-sts-3.7.3.RELEASE/em-rule-engine/src/main/java/com/example/AggregatedData.java
-/Users/212572312/Documents/workspace-sts-3.7.3.RELEASE/em-rule-engine/src/main/java/com/example/Rule.java
-/Users/212572312/Documents/workspace-sts-3.7.3.RELEASE/em-rule-engine/src/main/java/com/example/AggregatedDataRepository.java
-/Users/212572312/Documents/workspace-sts-3.7.3.RELEASE/em-rule-engine/src/main/java/com/example/RuleEngineController.java
-/Users/212572312/Documents/workspace-sts-3.7.3.RELEASE/em-rule-engine/src/main/java/com/example/RuleRepository.java
-/Users/212572312/Documents/workspace-sts-3.7.3.RELEASE/em-rule-engine/src/main/java/com/example/Application.java
+/Users/212572312/Documents/workspace-sts-3.7.3.RELEASE/Smart-Parking/ingestor/src/main/java/com/example/Application.java
+/Users/212572312/Documents/workspace-sts-3.7.3.RELEASE/Smart-Parking/ingestor/src/main/java/com/example/RuleEngineController.java
+/Users/212572312/Documents/workspace-sts-3.7.3.RELEASE/Smart-Parking/ingestor/src/main/java/com/example/RuleEngineService.java
+/Users/212572312/Documents/workspace-sts-3.7.3.RELEASE/Smart-Parking/ingestor/src/main/java/com/example/ParkingSpots.java
+/Users/212572312/Documents/workspace-sts-3.7.3.RELEASE/Smart-Parking/ingestor/src/main/java/com/example/em_rule_engine_alarms.java

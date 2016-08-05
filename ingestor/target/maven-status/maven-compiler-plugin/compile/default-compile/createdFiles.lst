@@ -1,8 +1,5 @@
+com/example/ParkingSpots.class
 com/example/RuleEngineService.class
 com/example/RuleEngineController.class
-com/example/AggregatedData.class
-com/example/AggregatedDataRepository.class
 com/example/Application.class
 com/example/em_rule_engine_alarms.class
-com/example/Rule.class
-com/example/RuleRepository.class

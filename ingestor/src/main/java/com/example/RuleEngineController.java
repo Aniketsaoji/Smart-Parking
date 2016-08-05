@@ -25,69 +25,69 @@ public class RuleEngineController {
     public RuleEngineController(RuleEngineService service) {
         this.service = service;
     }
-
-    /** Adds Aggregated Data to Rule Session
-     * Requires json body of 
-     * {"aggregatedDataType": <String>, "hierarchyLevel": <Asset/Site/Segment>, 
-     * "assetId": <String>, "siteId": <String>, "segmentId":<Sting>,
-     * "data": {JSONString} }
-     */
-    @RequestMapping(value = "/aggregateddata", method = RequestMethod.POST, consumes = {"application/json"})
-    public String aggregateddata(
-    		@RequestBody(required = true) AggregatedData a){
-
-    	a.parse();
-    	a.setReceived(new Timestamp(this.date.getTime()));
-    	service.insertAggregatedData(a);
-    	return "Inserted";
+//
+//    /** Adds Aggregated Data to Rule Session
+//     * Requires json body of 
+//     * {"aggregatedDataType": <String>, "hierarchyLevel": <Asset/Site/Segment>, 
+//     * "assetId": <String>, "siteId": <String>, "segmentId":<Sting>,
+//     * "data": {JSONString} }
+//     */
+//    @RequestMapping(value = "/aggregateddata", method = RequestMethod.POST, consumes = {"application/json"})
+//    public String aggregateddata(
+//    		@RequestBody(required = true) AggregatedData a){
+//
+//    	a.parse();
+//    	a.setReceived(new Timestamp(this.date.getTime()));
+//    	service.insertAggregatedData(a);
+//    	return "Inserted";
+//    }
+//    
+//    /** Adds new Rule to Rule table
+//     * Requires json body of 
+//     * {"ruleName": <String>, "ruleContents": <String>}
+//     */
+//    @RequestMapping(value = "/addrule", method = RequestMethod.POST, consumes = {"application/json"})
+//    public String addrule(
+//    		@RequestBody(required = true) Rule r){
+//    	service.addrule(r);
+//    	return "Added rule " + r.getRuleName();
+//    }
+//    
+//    /** Deletes from Rule table
+//     * Requires json body of 
+//     * {"ruleName": <String>}
+//     */
+//    @RequestMapping(value = "/deleterule", method = RequestMethod.POST)
+//    public String deleterule(
+//    		@RequestBody(required = true) String rulename){
+//    	service.deleterule(rulename);
+//    	return "Deleted rule " + rulename;
+//    }
+//    
+//    /**
+//     * Lists all alarms in database
+//     * @return
+//     */
+    @RequestMapping(value = "/listassets", method = RequestMethod.GET)
+    public void listDB(){
+    	service.getAssets();
     }
     
-    /** Adds new Rule to Rule table
-     * Requires json body of 
-     * {"ruleName": <String>, "ruleContents": <String>}
-     */
-    @RequestMapping(value = "/addrule", method = RequestMethod.POST, consumes = {"application/json"})
-    public String addrule(
-    		@RequestBody(required = true) Rule r){
-    	service.addrule(r);
-    	return "Added rule " + r.getRuleName();
-    }
-    
-    /** Deletes from Rule table
-     * Requires json body of 
-     * {"ruleName": <String>}
-     */
-    @RequestMapping(value = "/deleterule", method = RequestMethod.POST)
-    public String deleterule(
-    		@RequestBody(required = true) String rulename){
-    	service.deleterule(rulename);
-    	return "Deleted rule " + rulename;
-    }
-    
-    /**
-     * Lists all alarms in database
-     * @return
-     */
-    @RequestMapping(value = "/listalarms", method = RequestMethod.GET)
-    public String listDB(){
-    	return service.listAll();
-    }
-    
-    /**
-     * Lists all data in database
-     * @return
-     */
-    @RequestMapping(value = "/listdata", method = RequestMethod.GET)
-    public String listData(){
-    	return service.listData();
-    }
-    
-    /**
-     * Lists all rules in database
-     * @return
-     */
-    @RequestMapping(value = "/listrules", method = RequestMethod.GET)
-    public String listRules(){
-    	return service.listRules();
-    }
+//    /**
+//     * Lists all data in database
+//     * @return
+//     */
+//    @RequestMapping(value = "/listdata", method = RequestMethod.GET)
+//    public String listData(){
+//    	return service.listData();
+//    }
+//    
+//    /**
+//     * Lists all rules in database
+//     * @return
+//     */
+//    @RequestMapping(value = "/listrules", method = RequestMethod.GET)
+//    public String listRules(){
+//    	return service.listRules();
+//    }
 }
