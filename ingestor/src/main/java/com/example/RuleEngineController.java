@@ -71,6 +71,7 @@ public class RuleEngineController {
     @RequestMapping(value = "/listassets", method = RequestMethod.GET)
     public void listDB(){
     	service.getAssets();
+    	
     }
     
 //    /**

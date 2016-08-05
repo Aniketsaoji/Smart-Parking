@@ -23,9 +23,8 @@ public class ParkingSpots {
 	private float latitude;
 	private float longitude;
 	private Boolean status;
-	
-	
-	
+
+	private String asset;
 	
 	public float getLatitude() {
 		return latitude;
@@ -50,6 +49,12 @@ public class ParkingSpots {
 	}
 	public void setLocationuid(String locationuid) {
 		this.locationuid = locationuid;
+	}
+	public String getAsset() {
+		return asset;
+	}
+	public void setAsset(String asset) {
+		this.asset = asset;
 	}
 	
 	

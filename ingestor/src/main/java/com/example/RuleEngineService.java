@@ -2,9 +2,15 @@ package com.example;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.springframework.boot.json.JacksonJsonParser;
 
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
@@ -24,6 +30,8 @@ import org.springframework.http.HttpEntity;
 @Service
 public class RuleEngineService {
 	
+	private HashMap<String, String> map = new HashMap<String, String>();
+	
 //	private static ParkingSpotsRepository repo;
 
 	/**
@@ -33,6 +41,9 @@ public class RuleEngineService {
 	 * @param kieContainer
 	 * @param c
 	 */
+	
+	
+	
 //	@Autowired
 //	public RuleEngineService() {
 //		// Connects to Repositories
@@ -54,15 +65,59 @@ public class RuleEngineService {
 	
 	public void getAssets(){
 		System.out.println("Getting Assets");
+		
 		HttpHeaders header = new HttpHeaders();
 		header.add("Authorization", "Bearer eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJkMjcxOGFhZi04N2I4LTQ0YWMtYjcwZS00YjhmNGE0NGIyN2QiLCJzdWIiOiJhZG1pbiIsInNjb3BlIjpbImNsaWVudHMucmVhZCIsImNsaWVudHMuc2VjcmV0IiwiaWRwcy53cml0ZSIsInVhYS5yZXNvdXJjZSIsImllLXBhcmtpbmcuem9uZXMuMzczYjMwZjUtYmQ4ZS00MGE4LTlkYzItYmM3M2IyN2QzYzI4LmFkbWluIiwiY2xpZW50cy5hZG1pbiIsImllLXRyYWZmaWMuem9uZXMuMTMzM2U5OTMtZWYwZS00NGRmLWEyMTMtMjRjMTYwMzJhZDJiLnVzZXIiLCJzY2ltLnJlYWQiLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EuYWRtaW4iLCJjbGllbnRzLndyaXRlIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgudXNlciIsImlkcHMucmVhZCIsInNjaW0ud3JpdGUiXSwiY2xpZW50X2lkIjoiYWRtaW4iLCJjaWQiOiJhZG1pbiIsImF6cCI6ImFkbWluIiwiZ3JhbnRfdHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsInJldl9zaWciOiI1YzYyZThmNyIsImlhdCI6MTQ3MDM2OTUwOCwiZXhwIjoxNDcwNDEyNzA4LCJpc3MiOiJodHRwczovLzE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYS5wcmVkaXgtdWFhLnJ1bi5hd3MtdXN3MDItcHIuaWNlLnByZWRpeC5pby9vYXV0aC90b2tlbiIsInppZCI6IjE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYSIsImF1ZCI6WyJhZG1pbiIsImNsaWVudHMiLCJpZHBzIiwidWFhIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgiLCJpZS10cmFmZmljLnpvbmVzLjEzMzNlOTkzLWVmMGUtNDRkZi1hMjEzLTI0YzE2MDMyYWQyYiIsInNjaW0iLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EiXX0.nH5uw0CASACa1Xft1Z8Mptj8qo2huC3l5PpAtxOMwcTUPmBdba0RObahpHuPoQZ0kHolTCMtcSl_D1YE7lU5NdMlXKp4BuyyCOt4JGtE8OhPlZj1ro4cR6P1ckEE3yJ1GWa9kHFhE3fGvc-wRRo5srsmgHzxibnjfx2IRDF5t3q9yG4dhZ_vVdVUGUSrIVRZJxOkcmI3L5fI182ISO8NgvaA-PWaAoUAm_9Q4SFzz8wTxiDOAwuSlYpDe-fEuSH0xbRGAQmPBayZtH-MRE5cCXeFytZIadtF9d2PXy93RfEm8SbhOGT3GYXRuivNoNXDZ218TG_0js6voyrwUqfJiw");
 		header.add("Predix-Zone-Id", "373b30f5-bd8e-40a8-9dc2-bc73b27d3c28");
 		HttpEntity entity  = new HttpEntity(header);
 		RestTemplate rest = new RestTemplate();
-		String url = "https://ie-parking.run.aws-usw02-pr.ice.predix.io/v1/locations/search?q=location-type:PARKING_SPOT&bbox=0.716:-117.163,82.720:117.263&size=20&page=0";
+		String url = "https://ie-parking.run.aws-usw02-pr.ice.predix.io/v1/locations/search?q=location-type:PARKING_SPOT&bbox=0.716:-117.163,82.720:117.263&size=40&page=0";
 		String shiet = rest.exchange(url, HttpMethod.GET, entity, String.class).getBody();
 		
-		System.out.println("AYYLMAO " + shiet);
+		//System.out.println("AYYLMAO " + shiet);
+		
+		JacksonJsonParser parser = new JacksonJsonParser();
+		Map<String, Object> parsedData = parser.parseMap(shiet);
+		LinkedHashMap locations = (LinkedHashMap)parsedData.get("_embedded");
+		//System.out.println(" " + locations);
+		
+		ArrayList<LinkedHashMap> allLocs = (ArrayList<LinkedHashMap>)locations.get("locations");
+//		
+		//System.out.println(" " + allLocs);
+		System.out.println("_____________ ");
+		for(int i = 0; i < allLocs.size(); i++){
+			LinkedHashMap lnks = (LinkedHashMap) allLocs.get(i).get("_links");
+			String s = ((LinkedHashMap)lnks.get("self")).get("href").toString();
+			String[] s_arr = s.split("/");
+			System.out.println("LOCATION: " + s_arr[s_arr.length - 1]);
+			
+			
+			String assetLoc = rest.exchange("https://ie-parking.run.aws-usw02-pr.ice.predix.io/v1/locations/" + s_arr[s_arr.length - 1], HttpMethod.GET, entity, String.class).getBody();
+			Map<String, Object> pData = parser.parseMap(assetLoc);
+//			System.out.println(((ArrayList<LinkedHashMap>)((LinkedHashMap)pData.get("_embedded")).get("assets")).toString());
+			
+			LinkedHashMap lc = ((ArrayList<LinkedHashMap>)((LinkedHashMap)pData.get("_embedded")).get("assets")).get(0);
+//			System.out.println(lc);
+			String assetURL = ((LinkedHashMap)((LinkedHashMap) lc.get("_links")).get("self")).get("href").toString();
+//			System.out.println("ASSET: " + assetURL);
+			String[] ls_asset = assetURL.split("/");
+			String asset = ls_asset[ls_asset.length - 1];
+			System.out.println("ASSET: " + asset);
+			map.put(s_arr[s_arr.length - 1].toString(), asset);
+
+		}
+		ArrayList<String> assets = new ArrayList<String>();
+		for (String s: map.values()){
+			if(!assets.contains(s)){
+				assets.add(s);
+				String webs_url = "https://ie-parking.run.aws-usw02-pr.ice.predix.io/v1/assets/"+s+"/live-events?assetId="+s+"&event-types=PKIN,PKOUT";
+				String res2 = rest.exchange(webs_url, HttpMethod.GET, entity, String.class).getBody();
+				Map<String, Object> fin = parser.parseMap(res2);
+				String websocket_url = fin.get("url").toString();
+				System.out.println(websocket_url);
+				
+			}
+		}
     }
 		
 //    /**
