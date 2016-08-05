@@ -45,7 +45,16 @@ public class ParkingSpots {
 	public void setNumeric_id(String numeric_id) {
 		this.numeric_id = numeric_id;
 	}
-	
-	
 
+    @Override
+    public String toString() {
+        return "ParkingSpots{" +
+                "locationuid='" + locationuid + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", numeric_id='" + numeric_id + '\'' +
+                ", status=" + status +
+                ", asset='" + asset + '\'' +
+                '}';
+    }
 }

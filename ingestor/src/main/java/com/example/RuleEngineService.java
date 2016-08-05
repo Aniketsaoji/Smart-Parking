@@ -2,11 +2,7 @@ package com.example;
 
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -103,33 +99,43 @@ public class RuleEngineService {
 		HttpEntity entity  = new HttpEntity(header);
 		RestTemplate rest = new RestTemplate();
 		String url = "https://ie-parking.run.aws-usw02-pr.ice.predix.io/v1/locations/search?q=location-type:PARKING_SPOT&bbox=0.716:-117.163,82.720:117.263&size=40&page=0";
-		String shiet = rest.exchange(url, HttpMethod.GET, entity, String.class).getBody();
-		
-		//System.out.println("AYYLMAO " + shiet);
-		
+        String locationQueryResponse = rest.exchange(url, HttpMethod.GET, entity, String.class).getBody();
+
 		JacksonJsonParser parser = new JacksonJsonParser();
-		Map<String, Object> parsedData = parser.parseMap(shiet);
+		Map<String, Object> parsedData = parser.parseMap(locationQueryResponse);
 		LinkedHashMap locations = (LinkedHashMap)parsedData.get("_embedded");
-		//System.out.println(" " + locations);
-		
-		ArrayList<LinkedHashMap> allLocs = (ArrayList<LinkedHashMap>)locations.get("locations");
-//		
-		//System.out.println(" " + allLocs);
+        System.out.println(locations);
+
+        ArrayList<LinkedHashMap> allLocs = (ArrayList<LinkedHashMap>)locations.get("locations");
+//
 		System.out.println("_____________ ");
 		for(int i = 0; i < allLocs.size(); i++){
+            String locationUid = (String) ((LinkedHashMap) allLocs.get(i)).get("location-uid");
+            LinkedHashMap geoCoordinates = (LinkedHashMap) allLocs.get(i).get("coordinates");
+            String p1Coordinates = (String) geoCoordinates.get("P1");
+            String [] p1CoordinatesArray = p1Coordinates.split(",");
+            System.out.println(p1CoordinatesArray[0]);
+            System.out.println(p1CoordinatesArray[1]);
+
+            System.out.println(locationUid);
+            System.out.println(geoCoordinates.toString());
+
 			LinkedHashMap lnks = (LinkedHashMap) allLocs.get(i).get("_links");
 			String s = ((LinkedHashMap)lnks.get("self")).get("href").toString();
 			String[] s_arr = s.split("/");
-			System.out.println("LOCATION: " + s_arr[s_arr.length - 1]);
+            System.out.println("LOCATION: " + s_arr[s_arr.length - 1]);
 			ParkingSpots new_loc = new ParkingSpots();
 			new_loc.setNumeric_id(s_arr[s_arr.length - 1]);
-			
-	
-			
+            new_loc.setLocationuid(locationUid);
+            new_loc.setLatitude(Float.parseFloat(p1CoordinatesArray[0]));
+            new_loc.setLongitude(Float.parseFloat(p1CoordinatesArray[1]));
+            new_loc.setStatus(false);
+
+
 			String assetLoc = rest.exchange("https://ie-parking.run.aws-usw02-pr.ice.predix.io/v1/locations/" + s_arr[s_arr.length - 1], HttpMethod.GET, entity, String.class).getBody();
 			Map<String, Object> pData = parser.parseMap(assetLoc);
 //			System.out.println(((ArrayList<LinkedHashMap>)((LinkedHashMap)pData.get("_embedded")).get("assets")).toString());
-			
+
 			LinkedHashMap lc = ((ArrayList<LinkedHashMap>)((LinkedHashMap)pData.get("_embedded")).get("assets")).get(0);
 //			System.out.println(lc);
 			String assetURL = ((LinkedHashMap)((LinkedHashMap) lc.get("_links")).get("self")).get("href").toString();
