@@ -87,6 +87,11 @@ public class RuleEngineController {
     public String getParkingDetails() {
         return service.getParkingDetails();
     }
+
+    @RequestMapping(value = "/price", method = RequestMethod.GET)
+    public double getParkingPrice() {
+        return service.getParkingPrice();
+    }
     
 //    /**
 //     * Lists all data in database
