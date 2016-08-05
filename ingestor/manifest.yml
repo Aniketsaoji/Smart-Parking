@@ -1,11 +1,11 @@
 ---
 applications:
-  - name: em-rule-engine-dev
+  - name: Smart-Parking
     buildpack: java_buildpack
-    path: target/em-rule-engine-0.1.0.jar
+    path: target/Smart-Parking-0.1.0.jar
     memory: 1G
     instances: 1
-    services: 
-      - em-postgres
+#    services: 
+#      - em-postgres
 
       
