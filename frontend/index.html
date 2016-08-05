@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="TrafficApp">
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script type="text/javascript" src="./fusioncharts.js"></script>
+<script type="text/javascript" src="./fusioncharts.charts.js"></script>
+<script type="text/javascript" src="./angular-fusioncharts.min.js"></script>
+
+</head>
+<body>
+<div ng-controller="chartController">
+    <fusioncharts 
+        width= "100%"
+        height= "400"
+        type= "msline"
+        dataFormat= "json"
+        dataSource= "{{dataSource}}">
+    </fusioncharts>
+</div>
+<script>
+var app = angular.module('TrafficApp', ['ng-fusioncharts']);
+
+app.controller('chartController', function($scope) {
+	function setXSize(numX){
+
+	}
+
+     $scope.dataSource = {
+            "chart": {
+                "caption": "Parking Spot Availability",
+                "subCaption": "San Diego",
+                "captionFontSize": "14",
+                "subcaptionFontSize": "14",
+                "subcaptionFontBold": "0",
+                "paletteColors": "#0075c2,#1aaf5d",
+                "bgcolor": "#ffffff",
+                "showBorder": "0",
+                "showShadow": "0",
+                "showCanvasBorder": "0",
+                "usePlotGradientColor": "0",
+                "legendBorderAlpha": "0",
+                "legendShadow": "0",
+                "showAxisLines": "0",
+                "showAlternateHGridColor": "0",
+                "divlineThickness": "1",
+                "divLineIsDashed": "1",
+                "divLineDashLen": "1",
+                "divLineGapLen": "1",
+                "xAxisName": "Day",
+                "showValues": "0"               
+            },
+            "categories": [
+                {
+                    "category": [
+                        { "label": "1" }, 
+                        { "label": "2" }, 
+                        { "label": "3" },
+                        { "label": "4" }, 
+                        { "label": "5" }, 
+                        { "label": "" }, 
+                        { "label": "7" },
+                        { "label": "8" }, 
+                        { "label": "9" }, 
+                        { "label": "10" },
+                        { "label": "11" }, 
+                        { "label": "12" }, 
+                        { "label": "13" }, 
+                        { "label": "14" },
+                        { "label": "" }, 
+                        { "label": "16" }, 
+                        { "label": "17" },
+                        { "label": "18" }, 
+                        { "label": "19" }, 
+                        { "label": "20" }, 
+                        { "label": "21" },
+                        { "label": "22" }, 
+                        { "label": "23" }, 
+                        { "label": "24" },
+                        { "label": "25" }, 
+                        { "label": "26" }, 
+                        { "label": "27" }, 
+                        { "label": "28" }
+                    ]
+                }
+            ],
+            "dataset": [
+                {
+                    "seriesname": "Open Spots",
+                    "data": [
+						{ "value": "1" }, 
+                        { "value": "2" }, 
+                        { "value": "3" },
+                        { "value": "4" }, 
+                        { "value": "5" }, 
+                        { "value": "6" }, 
+                        { "value": "7" },
+                        { "value": "8" }, 
+                        { "value": "9" }, 
+                        { "value": "10" },
+                        { "value": "11" }, 
+                        { "value": "12" }, 
+                        { "value": "13" }, 
+                        { "value": "14" },
+                        { "value": "15" }, 
+                        { "value": "16" }, 
+                        { "value": "17" },
+                        { "value": "18" }, 
+                        { "value": "19" }, 
+                        { "value": "20" }, 
+                        { "value": "21" },
+                        { "value": "22" }, 
+                        { "value": "23" }, 
+                        { "value": "24" },
+                        { "value": "25" }, 
+                        { "value": "26" }, 
+                        { "value": "27" }, 
+                        { "value": "28" },
+                    ]
+                }
+              
+            ], 
+            "trendlines": [
+                {
+                    "line": [
+                        {
+                            "startvalue": "17022",
+                            "color": "#6baa01",
+                            "valueOnRight": "1",
+                            "displayvalue": "Average"
+                        }
+                    ]
+                }
+            ]
+        }
+    
+    var mockObj = {
+    	[
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false},
+    		{"filled": true},
+    		{"filled": false},
+    		{"filled": false}
+
+    	]
+    }
+
+    function get
+
+});
+</script>
+
+</body>
+</html>
