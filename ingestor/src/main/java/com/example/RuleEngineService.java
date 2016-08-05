@@ -53,6 +53,21 @@ public class RuleEngineService {
 //	    
 //	}
 
+    public double getParkingPrice() {
+        double total = 22;
+        double filled = 0;
+        for (ParkingSpots parkingSpots : allLocations) {
+            if (parkingSpots.getStatus() == true) {
+                filled++;
+            }
+        }
+        System.out.println(filled);
+        System.out.println(total);
+        double percentFilled = filled/total;
+        double price = 3 + percentFilled*5;
+        return price;
+    }
+
     public String getParkingDetails() {
         String json2Return = "{ ";
         for(ParkingSpots parkingSpots : allLocations) {
