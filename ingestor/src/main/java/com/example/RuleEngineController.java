@@ -87,7 +87,7 @@ public class RuleEngineController {
     public String getParkingDetails() {
         return service.getParkingDetails();
     }
-
+    @CrossOrigin(origins = "https://bettertraffic-test-app.run.aws-usw02-pr.ice.predix.io")
     @RequestMapping(value = "/price", method = RequestMethod.GET)
     public double getParkingPrice() {
         return service.getParkingPrice();

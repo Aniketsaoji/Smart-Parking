@@ -65,8 +65,8 @@ public class ParkingSpots {
         return "{\"locationUid\" : " + "\"" + locationuid + "\", " +
                 "\"lat\" : " + "" + latitude + ", " +
                 "\"lng\" : " + "" + longitude + ", " +
-                "\"state\" : " + "\"" + status + "\"" +  
-                "\"chance\" : " + "\"" + get_chance() + "\"" + "}";
+                "\"state\" : " + "\"" + status + "\"," +  
+                "\"chance\" : " + "" + get_chance() + "" + "}";
     }
     public Double get_chance(){
     	if(!status){

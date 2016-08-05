@@ -31,7 +31,7 @@ public class RuleEngineService {
 	ArrayList<ParkingSpots> allLocations = new ArrayList<ParkingSpots>();
 	ArrayList<Event> events = new ArrayList<Event>();
 	
-	final String authToken = "Bearer eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiIzMjA5OTk1Yi1lMTdiLTQ4NTEtYTRiNC04Nzk0YzhkOWMxZGMiLCJzdWIiOiJhZG1pbiIsInNjb3BlIjpbImNsaWVudHMucmVhZCIsImNsaWVudHMuc2VjcmV0IiwiaWRwcy53cml0ZSIsInVhYS5yZXNvdXJjZSIsImllLXBhcmtpbmcuem9uZXMuMzczYjMwZjUtYmQ4ZS00MGE4LTlkYzItYmM3M2IyN2QzYzI4LmFkbWluIiwiY2xpZW50cy5hZG1pbiIsImllLXRyYWZmaWMuem9uZXMuMTMzM2U5OTMtZWYwZS00NGRmLWEyMTMtMjRjMTYwMzJhZDJiLnVzZXIiLCJzY2ltLnJlYWQiLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EuYWRtaW4iLCJjbGllbnRzLndyaXRlIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgudXNlciIsImlkcHMucmVhZCIsInNjaW0ud3JpdGUiXSwiY2xpZW50X2lkIjoiYWRtaW4iLCJjaWQiOiJhZG1pbiIsImF6cCI6ImFkbWluIiwiZ3JhbnRfdHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsInJldl9zaWciOiI1YzYyZThmNyIsImlhdCI6MTQ3MDQxODMwMSwiZXhwIjoxNDcwNDYxNTAxLCJpc3MiOiJodHRwczovLzE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYS5wcmVkaXgtdWFhLnJ1bi5hd3MtdXN3MDItcHIuaWNlLnByZWRpeC5pby9vYXV0aC90b2tlbiIsInppZCI6IjE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYSIsImF1ZCI6WyJhZG1pbiIsImNsaWVudHMiLCJpZHBzIiwidWFhIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgiLCJpZS10cmFmZmljLnpvbmVzLjEzMzNlOTkzLWVmMGUtNDRkZi1hMjEzLTI0YzE2MDMyYWQyYiIsInNjaW0iLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EiXX0.fJ7KadvCJ-Ez4CwrPY1CYLu7LuSAo1VyzBtyisilhnJmwSfwoyiNABcNu_FtqKIuXH_2VrDrHhDnNxActeKJGIk1hTSCHw0CzuyS0hEg5llV2ZwZUWb5cv0u5KlTItFw-esKwyFeezrtAafVKI6f2jPuQVcjnf4NCgFQNGl35dogIYojSwbvN0Ugrjcf1XTEQKX7ViMOFdtWfGV78WTcb0UFEND43J2dOW3QYFyx9KEJS63VzKktVCyk8p7jB9Jxxu3fx2b7tgKRUMsbPusUK6mYW4fPFfyrXySVbMf75Gmh-BV3mY8YNdnCHdkOBsE8Ufp4wGqphXRKtVseRPAR9Q";
+	final String authToken = "Bearer eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiIzYTgxMzQxZC03ODAyLTQ4MDYtOTgwNC1kYzRiYWE1ZjZiNzEiLCJzdWIiOiJhZG1pbiIsInNjb3BlIjpbImNsaWVudHMucmVhZCIsImNsaWVudHMuc2VjcmV0IiwiaWRwcy53cml0ZSIsInVhYS5yZXNvdXJjZSIsImllLXBhcmtpbmcuem9uZXMuMzczYjMwZjUtYmQ4ZS00MGE4LTlkYzItYmM3M2IyN2QzYzI4LmFkbWluIiwiY2xpZW50cy5hZG1pbiIsImllLXRyYWZmaWMuem9uZXMuMTMzM2U5OTMtZWYwZS00NGRmLWEyMTMtMjRjMTYwMzJhZDJiLnVzZXIiLCJzY2ltLnJlYWQiLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EuYWRtaW4iLCJjbGllbnRzLndyaXRlIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgudXNlciIsImlkcHMucmVhZCIsInNjaW0ud3JpdGUiXSwiY2xpZW50X2lkIjoiYWRtaW4iLCJjaWQiOiJhZG1pbiIsImF6cCI6ImFkbWluIiwiZ3JhbnRfdHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsInJldl9zaWciOiI1YzYyZThmNyIsImlhdCI6MTQ3MDQzNDkxNSwiZXhwIjoxNDcwNDc4MTE1LCJpc3MiOiJodHRwczovLzE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYS5wcmVkaXgtdWFhLnJ1bi5hd3MtdXN3MDItcHIuaWNlLnByZWRpeC5pby9vYXV0aC90b2tlbiIsInppZCI6IjE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYSIsImF1ZCI6WyJhZG1pbiIsImNsaWVudHMiLCJpZHBzIiwidWFhIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgiLCJpZS10cmFmZmljLnpvbmVzLjEzMzNlOTkzLWVmMGUtNDRkZi1hMjEzLTI0YzE2MDMyYWQyYiIsInNjaW0iLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EiXX0.NGRdpCyDHe5vauYQC4GxtYSF6yA8dwrCNa_xD9vbN5Aa-DWJVQ9tMN0fwlCkKZ5adI45nAjBG1KRvcmUqTbEFctsUvhiIWncd2Cmh11is2Xtqhe4LGzpJTSq8rI4HGOy61QY_ux5VF9g56x3N1BFgFs6f90i1anYsQahZqPF8gWKIMFtaiyhAdmRuAGNYdqY7kCvow5itGe34QhqpnXPCQDkAbHuUASdgA1WMSMR1Wrmk7gV-AR6SwrGw0NMzmlBUSyeGb6q7ci70xphTtlXknOH8_a_sKpgHxGVWpj09QHKy0tcs1KFbTMDJJH_W2NbpiBmTtTiuez-wIQm55uqPg";
 //	private static ParkingSpotsRepository repo;
 
 	
@@ -69,12 +69,13 @@ public class RuleEngineService {
     }
 
     public String getParkingDetails() {
-        String json2Return = "{ ";
+        String json2Return = "{ \"data\":[";
         for(ParkingSpots parkingSpots : allLocations) {
-            json2Return = json2Return + parkingSpots.toJson();
+            json2Return = json2Return + parkingSpots.toJson() + ",";
 //            System.out.println(parkingSpots.toJson());
         }
-        json2Return = json2Return + "}";
+        json2Return = json2Return.substring(0, json2Return.length() - 1);
+        json2Return = json2Return + "]}";
         System.out.println(json2Return);
         return json2Return;
     }
@@ -136,8 +137,8 @@ public class RuleEngineService {
             							Event last = events.get(events.size() - 1);
                 						Event e = new Event();
                 						
-                	        			e.setNum_filled(Math.min(30,last.getNum_filled() + 1));
-                	        			e.setNum_open(30 - e.getNum_filled());
+                	        			e.setNum_filled(Math.min(22,last.getNum_filled() + 1));
+                	        			e.setNum_open(22 - e.getNum_filled());
                 	        			e.setTs(ts);
                 	        			
                 	        			events.add(e);
@@ -150,7 +151,7 @@ public class RuleEngineService {
             							Event last = events.get(events.size() - 1);
                 						Event e = new Event();
                 	        			e.setNum_filled(Math.max(0, last.getNum_filled() - 1));
-                	        			e.setNum_open(30 - e.getNum_filled());
+                	        			e.setNum_open(22 - e.getNum_filled());
                 	        			e.setTs(ts);
                 	        			events.add(e);
             						}
@@ -185,7 +186,7 @@ public class RuleEngineService {
 		
 		Event init_event = new Event();
 		init_event.setNum_filled(0);
-		init_event.setNum_open(30);
+		init_event.setNum_open(22);
 		init_event.setTs(date.getTime());
 		events.add(init_event);
 		
