@@ -117,18 +117,21 @@ public class RuleEngineService {
             					if(event_type.equals("PKIN")){
             						if(!s.getStatus()){
             							s.setStatus(true);
+            							s.setLast_ts(ts);
             							Event last = events.get(events.size() - 1);
                 						Event e = new Event();
                 						
                 	        			e.setNum_filled(Math.min(30,last.getNum_filled() + 1));
                 	        			e.setNum_open(30 - e.getNum_filled());
                 	        			e.setTs(ts);
+                	        			
                 	        			events.add(e);
             						}
             					}
             					else{
             						if(s.getStatus()){
             							s.setStatus(false);
+            							s.setLast_ts(ts);
             							Event last = events.get(events.size() - 1);
                 						Event e = new Event();
                 	        			e.setNum_filled(Math.max(0, last.getNum_filled() - 1));
