@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -59,16 +60,13 @@ public class RuleEngineController {
 //    	return "Added rule " + r.getRuleName();
 //    }
 //    
-//    /** Deletes from Rule table
-//     * Requires json body of 
-//     * {"ruleName": <String>}
-//     */
-//    @RequestMapping(value = "/deleterule", method = RequestMethod.POST)
-//    public String deleterule(
-//    		@RequestBody(required = true) String rulename){
-//    	service.deleterule(rulename);
-//    	return "Deleted rule " + rulename;
-//    }
+    @RequestMapping(value = "/events", method = RequestMethod.GET)
+    public String insert(
+            @RequestParam(required = true) long start,
+            @RequestParam(required = true) long end){
+
+        return service.getEvents(start, end);  
+    }
 //    
 //    /**
 //     * Lists all alarms in database

@@ -8,7 +8,7 @@ public class Event {
 	
 	private int num_filled;
 	private int num_open;
-	private Timestamp ts;
+	private long ts;
 	
 	
 	public int getNum_filled() {
@@ -23,10 +23,10 @@ public class Event {
 	public void setNum_open(int num_open) {
 		this.num_open = num_open;
 	}
-	public Timestamp getTs() {
+	public long getTs() {
 		return ts;
 	}
-	public void setTs(Timestamp ts) {
+	public void setTs(long ts) {
 		this.ts = ts;
 	}
 	
