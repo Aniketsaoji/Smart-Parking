@@ -226,9 +226,10 @@ public class RuleEngineService {
 				a.setAsset_id(asset);
 				allAssets.add(a);
 			}
-			
+
 			allLocations.add(new_loc);
-			
+            System.out.println("test" + new_loc);
+
 		}
     }
 	
