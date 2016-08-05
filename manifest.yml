@@ -1,0 +1,11 @@
+---
+applications:
+  - name: em-rule-engine-dev
+    buildpack: java_buildpack
+    path: target/em-rule-engine-0.1.0.jar
+    memory: 1G
+    instances: 1
+    services: 
+      - em-postgres
+
+      
