@@ -1,11 +1,13 @@
 package com.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -24,7 +26,16 @@ public class RuleEngineController {
     @Autowired
     public RuleEngineController(RuleEngineService service) {
         this.service = service;
+//        service.initialize();
+//        service.getParkingEvents();
     }
+    
+    @CrossOrigin(origins = "https://bettertraffic-test-app.run.aws-usw02-pr.ice.predix.io")
+    @RequestMapping(value = "/getParkingEvents", method = RequestMethod.GET)
+    public void getParkingEvents() {
+        service.getParkingEvents();
+    }
+
 //
 //    /** Adds Aggregated Data to Rule Session
 //     * Requires json body of 
@@ -53,24 +64,33 @@ public class RuleEngineController {
 //    	return "Added rule " + r.getRuleName();
 //    }
 //    
-//    /** Deletes from Rule table
-//     * Requires json body of 
-//     * {"ruleName": <String>}
-//     */
-//    @RequestMapping(value = "/deleterule", method = RequestMethod.POST)
-//    public String deleterule(
-//    		@RequestBody(required = true) String rulename){
-//    	service.deleterule(rulename);
-//    	return "Deleted rule " + rulename;
-//    }
+    @CrossOrigin(origins = "https://bettertraffic-test-app.run.aws-usw02-pr.ice.predix.io")
+    @RequestMapping(value = "/events", method = RequestMethod.GET)
+    public String insert(
+            @RequestParam(required = true) long start,
+            @RequestParam(required = true) long end){
+
+        return service.getEvents(start, end);  
+    }
 //    
 //    /**
 //     * Lists all alarms in database
 //     * @return
 //     */
-    @RequestMapping(value = "/listassets", method = RequestMethod.GET)
-    public void listDB(){
-    	service.getAssets();
+    @RequestMapping(value = "/initialize", method = RequestMethod.GET)
+    public void init(){
+    	service.initialize();
+    }
+    
+    @CrossOrigin(origins = "https://bettertraffic-test-app.run.aws-usw02-pr.ice.predix.io")
+    @RequestMapping(value = "/parkingDetails", method = RequestMethod.GET)
+    public String getParkingDetails() {
+        return service.getParkingDetails();
+    }
+    @CrossOrigin(origins = "https://bettertraffic-test-app.run.aws-usw02-pr.ice.predix.io")
+    @RequestMapping(value = "/price", method = RequestMethod.GET)
+    public double getParkingPrice() {
+        return service.getParkingPrice();
     }
     
 //    /**
