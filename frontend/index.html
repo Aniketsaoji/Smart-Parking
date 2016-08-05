@@ -2,12 +2,19 @@
 <html lang="en" ng-app="TrafficApp">
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuNNvv4iy7BTgDj_MmF0o2f6OD-SGE41Y&libraries=visualization"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script type="text/javascript" src="./fusioncharts.js"></script>
 <script type="text/javascript" src="./fusioncharts.charts.js"></script>
 <script type="text/javascript" src="./angular-fusioncharts.min.js"></script>
 <script type="text/javascript" src="./mapCode.js"></script>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <div class="navbar-brand">Predix-tive Parking</a>
+</nav>
 
 <style>
       html, body {
@@ -16,31 +23,49 @@
         padding: 0;
       }
       #map {
-        height: 100%;
+        height: 80%;
+        width:45%;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+        float: left;
       }
+
+      .chart-panel {
+      	margin-right: 2.5%;
+      	margin-left: 2.5%;
+      	width: 45%;
+      	float: right;
+      }
+
     </style>
 
 </head>
 <body>
+         <div id="map"></div>
+
+
+
 <div ng-controller="chartController">
-    <fusioncharts 
-        width= "100%"
-        height= "400"
+<div class="panel panel-default chart-panel">
+<div class="panel-heading">Current price: {{currentPrice}}</div>
+  <div class="panel-body">
+  	<fusioncharts 
+        width= "95%"
+        height= "69%"
         type= "msline"
         dataFormat= "json"
         dataSource= "{{dataSource}}">
     </fusioncharts>
-</div>
-<div id="map"></div>
+  </div>
+  </div>
+  </div>
+
+
 <script>
 var app = angular.module('TrafficApp', ['ng-fusioncharts']);
 
-app.controller('chartController', function($scope) {
-	function setXSize(numX){
-
-	}
-
-     $scope.dataSource = {
+app.controller('chartController',['$scope', '$interval', function($scope, $interval){
+	  $scope.dataSource = {
             "chart": {
                 "caption": "Parking Spot Availability",
                 "subCaption": "San Diego",
@@ -68,34 +93,7 @@ app.controller('chartController', function($scope) {
             "categories": [
                 {
                     "category": [
-                        { "label": "1" }, 
-                        { "label": "2" }, 
-                        { "label": "3" },
-                        { "label": "4" }, 
-                        { "label": "5" }, 
-                        { "label": "" }, 
-                        { "label": "7" },
-                        { "label": "8" }, 
-                        { "label": "9" }, 
-                        { "label": "10" },
-                        { "label": "11" }, 
-                        { "label": "12" }, 
-                        { "label": "13" }, 
-                        { "label": "14" },
-                        { "label": "" }, 
-                        { "label": "16" }, 
-                        { "label": "17" },
-                        { "label": "18" }, 
-                        { "label": "19" }, 
-                        { "label": "20" }, 
-                        { "label": "21" },
-                        { "label": "22" }, 
-                        { "label": "23" }, 
-                        { "label": "24" },
-                        { "label": "25" }, 
-                        { "label": "26" }, 
-                        { "label": "27" }, 
-                        { "label": "28" }
+                       
                     ]
                 }
             ],
@@ -103,34 +101,7 @@ app.controller('chartController', function($scope) {
                 {
                     "seriesname": "Open Spots",
                     "data": [
-						{ "value": "1" }, 
-                        { "value": "2" }, 
-                        { },
-                        { "value": "4" }, 
-                        { "value": "5" }, 
-                        { "value": "6" }, 
-                        { "value": "7" },
-                        { "value": "8" }, 
-                        { "value": "9" }, 
-                        { "value": "10" },
-                        { "value": "11" }, 
-                        { "value": "12" }, 
-                        { "value": "13" }, 
-                        { "value": "14" },
-                        { "value": "15" }, 
-                        { "value": "16" }, 
-                        { "value": "17" },
-                        { "value": "18" }, 
-                        { "value": "19" }, 
-                        { "value": "20" }, 
-                        { "value": "21" },
-                        { "value": "22" }, 
-                        { "value": "23" }, 
-                        { "value": "24" },
-                        { "value": "25" }, 
-                        { "value": "26" }, 
-                        { "value": "27" }, 
-                        { "value": "28" },
+						
                     ]
                 }
               
@@ -148,70 +119,107 @@ app.controller('chartController', function($scope) {
                 }
             ]
         }
-    
-    var mockObj = {
-    	"fillData": [
-    		{"epochtime": 5},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false},
-    		{"filled": true},
-    		{"filled": false},
-    		{"filled": false}
 
-    	]
-    }
+        var shiet = {"shiet": [
+    	    {ts: 1124124, num_spots: 10},		
+    		{ts:1470419235020, num_spots:3},
+    	 	{ts:1470419235050, num_spots:7},
 
-    setSpotChartData(mockObj.fillData);
-    function setSpotChartData(locationFillData){
-    	angular.forEach(locationFillData, function(value, key){
-    		console.log("DICKS");
-    		console.log(value.filled);
-    	})
-    }
+    	 	{ts:1470419236090, num_spots:13},
+    	 	{ts:1470419236095, num_spots:19},
 
-});
+    	 	{ts:1470419237010, num_spots:29},
+    	  	{ts:1470419237020, num_spots:4},
+    	   	{ts:1470419237030, num_spots:14},
+
+    	    {ts:1470419238040, num_spots:9},
+    	    {ts:1470419238030, num_spots:20},
+
+    	    {ts:1470419240020, num_spots:29},
+    	    {ts:1470419240010, num_spots:9}, 
+
+    	    {ts:1470419241009, num_spots:19},
+    	    {ts:1470419241001, num_spots:2},
+
+    	    {ts:1470419245002, num_spots:13}, 
+
+    	    {ts:1470419246005, num_spots:21}, 
+
+    	    {ts:1470419249002, num_spots:22},
+
+    	    {ts:1470419252009, num_spots:25},
+
+    	    {ts:1470419259001, num_spots:10}, 
+
+    	    {ts:1470419265005, num_spots:2}, 
+
+    	    {ts:1470419265009, num_spots:18}
+
+    	    ]}
+
+    	    var pastMin = 10	;
+    	    var numDataPoints = pastMin * 60; //mins
+    	    $scope.dataSource.categories[0].category = getXAxisPoints();
+    	    function getXAxisPoints(){
+    	    	var xAxis = [];
+    	    	for(var i = 0; i < numDataPoints ; i++){
+    	    		xAxis.push({});
+    	    	}
+    	    	return xAxis;
+    	    }
+
+    	 function updateList(spotList){		
+    	 	var bucketList = [];
+    		var currentTime = Math.floor(new Date().getTime()/1000)*1000;
+
+    		angular.forEach(spotList, function(value, key){		
+    			var val = value.ts	+ 3 * 60000;
+    			if(val < currentTime){
+    				var bucketIndex = Math.floor((currentTime - val) / 1000);
+    				bucketList[bucketIndex] = value.open;
+    			}
+    		})
+
+    		var newDataset = [];
+    	    for(var i = 0; i < numDataPoints; i++){
+    	    	if(bucketList[i]){
+    	    		newDataset[i] = {"value": bucketList[i]}
+    	    	}else{
+
+    	    		newDataset[i] = {};
+    	    	}
+    	    }
+    	    $scope.dataSource.dataset[0].data = newDataset;
+
+		}
+
+		$scope.currentPrice = 3;
+		$interval(function(){
+			var url = "https://smart-parking.run.aws-usw02-pr.ice.predix.io/price";
+			$.ajax({
+  				url: url,
+  				success: function(response){
+  					$scope.currentPrice = "$" + parseFloat(Math.round(response * 100) / 100).toFixed(2);
+  				}
+			});
+		}, 2000)
+
+
+		$interval(function(){
+			var endTime = new Date().getTime()- 3 * 60 * 1000;
+			var startTime = new Date().getTime() - 15 * 60 * 1000;
+			var reqParams = "start=" + startTime+ "&end=" + endTime;
+			var url = "https://smart-parking.run.aws-usw02-pr.ice.predix.io/events";
+			$.ajax({
+  				url: url,
+  				data: reqParams,
+  				success: function(response){
+  					var json = JSON.parse(response);
+  					updateList(json.events);
+  				}
+			});
+		}, 2000)
+}]);
 </script>
 
 </body>
