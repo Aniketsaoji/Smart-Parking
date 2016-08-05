@@ -1,10 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="TrafficApp">
 <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuNNvv4iy7BTgDj_MmF0o2f6OD-SGE41Y&libraries=visualization"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script type="text/javascript" src="./fusioncharts.js"></script>
 <script type="text/javascript" src="./fusioncharts.charts.js"></script>
 <script type="text/javascript" src="./angular-fusioncharts.min.js"></script>
+<script type="text/javascript" src="./mapCode.js"></script>
+
+<style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
 
 </head>
 <body>
@@ -17,6 +31,7 @@
         dataSource= "{{dataSource}}">
     </fusioncharts>
 </div>
+<div id="map"></div>
 <script>
 var app = angular.module('TrafficApp', ['ng-fusioncharts']);
 
@@ -47,7 +62,8 @@ app.controller('chartController', function($scope) {
                 "divLineDashLen": "1",
                 "divLineGapLen": "1",
                 "xAxisName": "Day",
-                "showValues": "0"               
+                "showValues": "0",
+                 "connectNullData": "1"               
             },
             "categories": [
                 {
@@ -89,7 +105,7 @@ app.controller('chartController', function($scope) {
                     "data": [
 						{ "value": "1" }, 
                         { "value": "2" }, 
-                        { "value": "3" },
+                        { },
                         { "value": "4" }, 
                         { "value": "5" }, 
                         { "value": "6" }, 
@@ -134,8 +150,8 @@ app.controller('chartController', function($scope) {
         }
     
     var mockObj = {
-    	[
-    		{"filled": true},
+    	"fillData": [
+    		{"epochtime": 5},
     		{"filled": false},
     		{"filled": false},
     		{"filled": true},
@@ -187,7 +203,13 @@ app.controller('chartController', function($scope) {
     	]
     }
 
-    function get
+    setSpotChartData(mockObj.fillData);
+    function setSpotChartData(locationFillData){
+    	angular.forEach(locationFillData, function(value, key){
+    		console.log("DICKS");
+    		console.log(value.filled);
+    	})
+    }
 
 });
 </script>
