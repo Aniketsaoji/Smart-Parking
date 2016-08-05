@@ -1,11 +1,14 @@
 package com.example;
 
+import java.util.Date;
+
 public class ParkingSpots {
 	
 	private String locationuid;
 	private float latitude;
 	private float longitude;
 	private String numeric_id;
+	private long last_ts;
 	private Boolean status;
 	private String asset;
 	
@@ -60,8 +63,22 @@ public class ParkingSpots {
 
     public String toJson() {
         return "{\"locationUid\" : " + "\"" + locationuid + "\", " +
-                "\"lat\" : " + "\"" + latitude + "\", " +
-                "\"lng\" : " + "\"" + longitude + "\", " +
-                "\"state\" : " + "\"" + status + "\"" +  "}";
+                "\"lat\" : " + "" + latitude + ", " +
+                "\"lng\" : " + "" + longitude + ", " +
+                "\"state\" : " + "\"" + status + "\"" +  
+                "\"chance\" : " + "\"" + get_chance() + "\"" + "}";
     }
+    public Double get_chance(){
+    	if(!status){
+    		return 1.0;
+    	}
+    	Date date = new Date();
+    	return (date.getTime() - last_ts) / (6000.0 * 15.0);
+    }
+	public long getLast_ts() {
+		return last_ts;
+	}
+	public void setLast_ts(long last_ts) {
+		this.last_ts = last_ts;
+	}
 }
