@@ -52,6 +52,16 @@ public class RuleEngineService {
 //	    
 //	    
 //	}
+
+    public void getParkingDetails() {
+        String json2Return = "{ ";
+        for(ParkingSpots parkingSpots : allLocations) {
+            json2Return = json2Return + parkingSpots.toJson();
+//            System.out.println(parkingSpots.toJson());
+        }
+        json2Return = json2Return + "}";
+        System.out.println(json2Return);
+    }
 	
 	public String getEvents(long start, long end){
 		String s = "{events: [";
@@ -65,6 +75,7 @@ public class RuleEngineService {
 		System.out.println(s);
 		return s;
 	}
+
 	
 	public void getParkingEvents() {
 		Date date = new Date();

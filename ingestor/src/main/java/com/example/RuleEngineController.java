@@ -75,7 +75,11 @@ public class RuleEngineController {
     @RequestMapping(value = "/initialize", method = RequestMethod.GET)
     public void init(){
     	service.initialize();
-    	
+    }
+
+    @RequestMapping(value = "/parkingDetails", method = RequestMethod.GET)
+    public void getParkingDetails() {
+        service.getParkingDetails();
     }
     
 //    /**

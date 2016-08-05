@@ -57,4 +57,11 @@ public class ParkingSpots {
                 ", asset='" + asset + '\'' +
                 '}';
     }
+
+    public String toJson() {
+        return "{\"locationUid\" : " + "\"" + locationuid + "\", " +
+                "\"lat\" : " + "\"" + latitude + "\", " +
+                "\"lng\" : " + "\"" + longitude + "\", " +
+                "\"state\" : " + "\"" + status + "\"" +  "}";
+    }
 }
