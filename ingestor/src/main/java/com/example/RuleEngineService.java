@@ -53,10 +53,25 @@ public class RuleEngineService {
 //	    
 //	}
 	
+	public String getEvents(long start, long end){
+		String s = "{events: [";
+		for(Event e: events){
+			if(e.getTs() >= start && e.getTs() <= end){
+				s += "{ts:" + e.getTs() + "," + "filled:" + e.getNum_filled() + ",open:" + e.getNum_open() + "},";
+			}
+		}
+		s = s.substring(0, s.length()-1);
+		s += "]}";
+		System.out.println(s);
+		return s;
+	}
+	
 	public void getParkingEvents() {
 		Date date = new Date();
 		long end = date.getTime();
 		long start = end - 15000;
+		
+		JacksonJsonParser parser = new JacksonJsonParser();
 		
 		HttpHeaders header = new HttpHeaders();
         header.add("Authorization", authToken);
@@ -73,6 +88,42 @@ public class RuleEngineService {
 //        		JacksonJsonParser parser = new JacksonJsonParser();
 //        		Map<String, Object> parsedData = parser.parseMap(shiet);
         		System.out.println(shiet);
+        		if (shiet != null && !shiet.isEmpty()) {
+        			Map<String, Object> eventsData = parser.parseMap(shiet);
+            		
+            		
+            		ArrayList<LinkedHashMap> mp = ((ArrayList<LinkedHashMap>)((LinkedHashMap) eventsData.get("_embedded")).get("events"));
+            		System.out.println(mp);
+            		for(LinkedHashMap l : mp){
+            			long ts = (long) ((LinkedHashMap)l).get("timestamp");
+            			String event_type = (String) ((LinkedHashMap)l).get("event-type");
+            			String location_uid = (String) ((LinkedHashMap)l).get("location-uid");
+            			
+            			
+            			for(ParkingSpots s: allLocations){
+            				if(s.getLocationuid().equals(location_uid)){
+            					if(event_type.equals("PKIN")){
+            						s.setStatus(true);
+            						Event e = new Event();
+            	        			e.setNum_filled(e.getNum_filled() + 1);
+            	        			e.setNum_open(e.getNum_open() - 1);
+            	        			e.setTs(ts);
+            	        			events.add(e);
+            					}
+            					else{
+            						s.setStatus(false);
+            						Event e = new Event();
+            	        			e.setNum_filled(Math.max(0, e.getNum_filled() - 1));
+            	        			e.setNum_open(Math.min(30,e.getNum_open() + 1));
+            	        			e.setTs(ts);
+            	        			events.add(e);
+            					}
+            					break;
+            				}
+            			}
+            		}
+        		}
+        		
         	}
         	start = end;
         	end = start + 15000;
@@ -92,6 +143,14 @@ public class RuleEngineService {
 	
 	public void initialize(){
 		System.out.println("Getting Assets and locations");
+		
+		Date date = new Date();
+		
+		Event init_event = new Event();
+		init_event.setNum_filled(0);
+		init_event.setNum_open(30);
+		init_event.setTs(date.getTime());
+		
 		
 		HttpHeaders header = new HttpHeaders();
 		header.add("Authorization", authToken);
