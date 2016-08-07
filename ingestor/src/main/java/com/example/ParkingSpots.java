@@ -70,10 +70,10 @@ public class ParkingSpots {
     }
     public Double get_chance(){
     	if(!status){
-    		return 1.0;
+    		return 10.0;
     	}
     	Date date = new Date();
-    	return (date.getTime() - last_ts) / (6000.0 * 15.0);
+    	return Math.min(date.getTime() - last_ts, 60000*15.0) / (6000.0 * 15.0);
     }
 	public long getLast_ts() {
 		return last_ts;

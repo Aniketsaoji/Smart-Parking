@@ -1,5 +1,6 @@
 package com.example;
 
+import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.*;
@@ -10,11 +11,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.boot.json.JacksonJsonParser;
 
 import org.springframework.web.client.RestTemplate;
+
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
 
@@ -31,7 +37,10 @@ public class RuleEngineService {
 	ArrayList<ParkingSpots> allLocations = new ArrayList<ParkingSpots>();
 	ArrayList<Event> events = new ArrayList<Event>();
 	
-	final String authToken = "Bearer eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiIzYTgxMzQxZC03ODAyLTQ4MDYtOTgwNC1kYzRiYWE1ZjZiNzEiLCJzdWIiOiJhZG1pbiIsInNjb3BlIjpbImNsaWVudHMucmVhZCIsImNsaWVudHMuc2VjcmV0IiwiaWRwcy53cml0ZSIsInVhYS5yZXNvdXJjZSIsImllLXBhcmtpbmcuem9uZXMuMzczYjMwZjUtYmQ4ZS00MGE4LTlkYzItYmM3M2IyN2QzYzI4LmFkbWluIiwiY2xpZW50cy5hZG1pbiIsImllLXRyYWZmaWMuem9uZXMuMTMzM2U5OTMtZWYwZS00NGRmLWEyMTMtMjRjMTYwMzJhZDJiLnVzZXIiLCJzY2ltLnJlYWQiLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EuYWRtaW4iLCJjbGllbnRzLndyaXRlIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgudXNlciIsImlkcHMucmVhZCIsInNjaW0ud3JpdGUiXSwiY2xpZW50X2lkIjoiYWRtaW4iLCJjaWQiOiJhZG1pbiIsImF6cCI6ImFkbWluIiwiZ3JhbnRfdHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsInJldl9zaWciOiI1YzYyZThmNyIsImlhdCI6MTQ3MDQzNDkxNSwiZXhwIjoxNDcwNDc4MTE1LCJpc3MiOiJodHRwczovLzE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYS5wcmVkaXgtdWFhLnJ1bi5hd3MtdXN3MDItcHIuaWNlLnByZWRpeC5pby9vYXV0aC90b2tlbiIsInppZCI6IjE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYSIsImF1ZCI6WyJhZG1pbiIsImNsaWVudHMiLCJpZHBzIiwidWFhIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgiLCJpZS10cmFmZmljLnpvbmVzLjEzMzNlOTkzLWVmMGUtNDRkZi1hMjEzLTI0YzE2MDMyYWQyYiIsInNjaW0iLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EiXX0.NGRdpCyDHe5vauYQC4GxtYSF6yA8dwrCNa_xD9vbN5Aa-DWJVQ9tMN0fwlCkKZ5adI45nAjBG1KRvcmUqTbEFctsUvhiIWncd2Cmh11is2Xtqhe4LGzpJTSq8rI4HGOy61QY_ux5VF9g56x3N1BFgFs6f90i1anYsQahZqPF8gWKIMFtaiyhAdmRuAGNYdqY7kCvow5itGe34QhqpnXPCQDkAbHuUASdgA1WMSMR1Wrmk7gV-AR6SwrGw0NMzmlBUSyeGb6q7ci70xphTtlXknOH8_a_sKpgHxGVWpj09QHKy0tcs1KFbTMDJJH_W2NbpiBmTtTiuez-wIQm55uqPg";
+	long end;
+	long start;
+	
+	String authToken = "Bearer eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJhYTVjMjhjYy0xZDcxLTRiOTItYjM0MS05ZTIxYjY3MGE0MDAiLCJzdWIiOiJhZG1pbiIsInNjb3BlIjpbImNsaWVudHMucmVhZCIsImNsaWVudHMuc2VjcmV0IiwiaWRwcy53cml0ZSIsInVhYS5yZXNvdXJjZSIsImllLXBhcmtpbmcuem9uZXMuMzczYjMwZjUtYmQ4ZS00MGE4LTlkYzItYmM3M2IyN2QzYzI4LmFkbWluIiwiY2xpZW50cy5hZG1pbiIsImllLXRyYWZmaWMuem9uZXMuMTMzM2U5OTMtZWYwZS00NGRmLWEyMTMtMjRjMTYwMzJhZDJiLnVzZXIiLCJzY2ltLnJlYWQiLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EuYWRtaW4iLCJjbGllbnRzLndyaXRlIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgudXNlciIsImlkcHMucmVhZCIsInNjaW0ud3JpdGUiXSwiY2xpZW50X2lkIjoiYWRtaW4iLCJjaWQiOiJhZG1pbiIsImF6cCI6ImFkbWluIiwiZ3JhbnRfdHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsInJldl9zaWciOiI1YzYyZThmNyIsImlhdCI6MTQ3MDUzNzczNCwiZXhwIjoxNDcwNTgwOTM0LCJpc3MiOiJodHRwczovLzE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYS5wcmVkaXgtdWFhLnJ1bi5hd3MtdXN3MDItcHIuaWNlLnByZWRpeC5pby9vYXV0aC90b2tlbiIsInppZCI6IjE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYSIsImF1ZCI6WyJhZG1pbiIsImNsaWVudHMiLCJpZHBzIiwidWFhIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgiLCJpZS10cmFmZmljLnpvbmVzLjEzMzNlOTkzLWVmMGUtNDRkZi1hMjEzLTI0YzE2MDMyYWQyYiIsInNjaW0iLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EiXX0.A_oc8pQktcmXHQ_EK3yf9Fm_TQHJj5nIQ1RHGRClo8k8N1j45MNLpig3V-OfT4FIiquSJH-ch4vcY-RxM2wSrIHTcBJ4fj_W3wTNV35ZWsDxO9yOoRBucO78Dkxs0YBHJTXlZMXvLGto1slzpdMqeKqLxVRt3XHYagqz7eP8pV5lXN4_oJUVT8LQnB6B_L6796TDeBojzshmbPS6-2fJ3tMcFDP9-3JKLBfQ9n4yBr50QyRomHqBC6_j378VX7N2I_ghIbDehM6n7F1VEdD9GINDEJwYoUQ-jW6QoF-gyn_8y0cfwoZCJXo04WxqCfAO9BQX5DFxbclFvB5xtxT6MA";
 //	private static ParkingSpotsRepository repo;
 
 	
@@ -54,11 +63,11 @@ public class RuleEngineService {
 //	}
 
     public double getParkingPrice() {
-        double total = 22;
-        double filled = 0;
+        double total = 22.0;
+        double filled = 0.0;
         for (ParkingSpots parkingSpots : allLocations) {
             if (parkingSpots.getStatus() == true) {
-                filled++;
+                filled += 1;
             }
         }
         System.out.println(filled);
@@ -82,23 +91,26 @@ public class RuleEngineService {
 	
 	public String getEvents(long start, long end){
 		String s = "{\"events\": [";
+		ArrayList<Event> recent = new ArrayList<Event>();
 		for(Event e: events){
 			if(e.getTs() >= start && e.getTs() <= end){
 				s += "{\"ts\":" + e.getTs() + "," + "\"filled\":" + e.getNum_filled() + ",\"open\":" + e.getNum_open() + "},";
+			}
+			if((new Date()).getTime() - e.getTs() < 86400000){
+				recent.add(e);
 			}
 		}
 		s = s.substring(0, s.length()-1);
 		s += "]}";
 		System.out.println(s);
+		events = recent;
 		return s;
 	}
 
-	
+	@Scheduled(fixedRate=15000)
 	public void getParkingEvents() {
-		Date date = new Date();
-		long end = date.getTime();
-		long start = end - 15000;
-		
+		Date d = new Date();
+		System.out.println("GETTING DATA " + d.getTime());
 		JacksonJsonParser parser = new JacksonJsonParser();
 		
 		HttpHeaders header = new HttpHeaders();
@@ -107,82 +119,85 @@ public class RuleEngineService {
         HttpEntity entity = new HttpEntity(header);
         RestTemplate rest = new RestTemplate();
         
-        for (; ; ) {
-        	for(Asset a: allAssets){
-        		System.out.println("ASSET: " + a.getAsset_id());
-        		String id = a.getAsset_id();
-        		String url = "https://ie-parking.run.aws-usw02-pr.ice.predix.io/v1/assets/"+id+"/events?assetId="+id+"&event-types=PKIN,PKOUT&start-ts=" + start + "&end-ts=" + end;
-        		String shiet = rest.exchange(url, HttpMethod.GET, entity, String.class).getBody();
+        
+    	for(Asset a: allAssets){
+//    		System.out.println("ASSET: " + a.getAsset_id());
+    		String id = a.getAsset_id();
+    		String url = "https://ie-parking.run.aws-usw02-pr.ice.predix.io/v1/assets/"+id+"/events?assetId="+id+"&event-types=PKIN,PKOUT&start-ts=" + start + "&end-ts=" + end;
+    		String shiet = rest.exchange(url, HttpMethod.GET, entity, String.class).getBody();
 //        		JacksonJsonParser parser = new JacksonJsonParser();
 //        		Map<String, Object> parsedData = parser.parseMap(shiet);
-        		System.out.println(shiet);
-        		if (shiet != null && !shiet.isEmpty()) {
-        			Map<String, Object> eventsData = parser.parseMap(shiet);
-            		
-            		
-            		ArrayList<LinkedHashMap> mp = ((ArrayList<LinkedHashMap>)((LinkedHashMap) eventsData.get("_embedded")).get("events"));
-            		System.out.println(mp);
-            		for(LinkedHashMap l : mp){
-            			long ts = (long) ((LinkedHashMap)l).get("timestamp");
-            			String event_type = (String) ((LinkedHashMap)l).get("event-type");
-            			String location_uid = (String) ((LinkedHashMap)l).get("location-uid");
-            			
-            			
-            			for(ParkingSpots s: allLocations){
-            				if(s.getLocationuid().equals(location_uid)){
-            					if(event_type.equals("PKIN")){
-            						if(!s.getStatus()){
-            							s.setStatus(true);
-            							s.setLast_ts(ts);
-            							Event last = events.get(events.size() - 1);
-                						Event e = new Event();
-                						
-                	        			e.setNum_filled(Math.min(22,last.getNum_filled() + 1));
-                	        			e.setNum_open(22 - e.getNum_filled());
-                	        			e.setTs(ts);
-                	        			
-                	        			events.add(e);
-            						}
-            					}
-            					else{
-            						if(s.getStatus()){
-            							s.setStatus(false);
-            							s.setLast_ts(ts);
-            							Event last = events.get(events.size() - 1);
-                						Event e = new Event();
-                	        			e.setNum_filled(Math.max(0, last.getNum_filled() - 1));
-                	        			e.setNum_open(22 - e.getNum_filled());
-                	        			e.setTs(ts);
-                	        			events.add(e);
-            						}
-            					}
-            					break;
-            				}
-            			}
-            		}
-        		}
+//    		System.out.println(shiet);
+    		if (shiet != null && !shiet.isEmpty()) {
+    			Map<String, Object> eventsData = parser.parseMap(shiet);
         		
-        	}
-        	start = end;
-        	end = start + 15000;
-            try {
-                //Sleep for a minute
-                System.out.println("Sleeping for a minute");
-                Thread.sleep(15000);
-
-                System.out.println("We back fam");
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        		
+        		ArrayList<LinkedHashMap> mp = ((ArrayList<LinkedHashMap>)((LinkedHashMap) eventsData.get("_embedded")).get("events"));
+//        		System.out.println(mp);
+        		for(LinkedHashMap l : mp){
+        			long ts = (long) ((LinkedHashMap)l).get("timestamp");
+        			String event_type = (String) ((LinkedHashMap)l).get("event-type");
+        			String location_uid = (String) ((LinkedHashMap)l).get("location-uid");
+        			
+        			
+        			for(ParkingSpots s: allLocations){
+        				if(s.getLocationuid().equals(location_uid)){
+        					if(event_type.equals("PKIN")){
+        						if(!s.getStatus()){
+        							s.setStatus(true);
+        							s.setLast_ts(ts);
+        							Event last = events.get(events.size() - 1);
+            						Event e = new Event();
+            						
+            	        			e.setNum_filled(Math.min(22,last.getNum_filled() + 1));
+            	        			e.setNum_open(22 - e.getNum_filled());
+            	        			e.setTs(ts);
+            	        			
+            	        			System.out.println(s.getLocationuid() + " " +  s.get_chance() + " " + s.getLast_ts() + " " + s.getStatus());
+            	        			
+            	        			events.add(e);
+        						}
+        					}
+        					else{
+        						if(s.getStatus()){
+        							s.setStatus(false);
+        							s.setLast_ts(ts);
+        							Event last = events.get(events.size() - 1);
+            						Event e = new Event();
+            	        			e.setNum_filled(Math.max(0, last.getNum_filled() - 1));
+            	        			e.setNum_open(22 - e.getNum_filled());
+            	        			e.setTs(ts);
+            	        			
+            	        			System.out.println(s.getLocationuid() + " " +  s.get_chance() + " " + s.getLast_ts() + " " + s.getStatus());
+            	        			
+            	        			events.add(e);
+        						}
+        					}
+        					break;
+        				}
+        			}
+        		}
+    		}
+    		
+    	}
+    	start = end;
+    	end = start + 15000;
+    
     }
 
 	
 	public void initialize(){
-		System.out.println("Getting Assets and locations");
+		System.out.println("INITIALIZING");
+		
+		
+		
+		resetBearer();
+		System.out.println(authToken);
 		
 		Date date = new Date();
+		
+		end = date.getTime();
+		start = end - 15000;
 		
 		Event init_event = new Event();
 		init_event.setNum_filled(0);
@@ -265,7 +280,36 @@ public class RuleEngineService {
             System.out.println("test" + new_loc);
 
 		}
+		
+		
+		
     }
+	@Scheduled(fixedRate=10800000)
+	public void resetBearer(){
+		OkHttpClient client = new OkHttpClient();
+
+		Request request = new Request.Builder()
+		  .url("https://162b6ece-8910-4650-92eb-48aacd8bc6ca.predix-uaa.run.aws-usw02-pr.ice.predix.io/oauth/token?grant_type=client_credentials")
+		  .get()
+		  .addHeader("authorization", "Basic YWRtaW46YXBwdWt1dHRhbg==")
+		  .addHeader("cache-control", "no-cache")
+		  .addHeader("postman-token", "1d7de9c8-2c0c-7579-9c1c-dc592f30a33f")
+		  .build();
+
+		Response response;
+		JacksonJsonParser parser = new JacksonJsonParser();
+		try {
+			
+			response = client.newCall(request).execute();
+			Map<String, Object> resp = parser.parseMap(response.body().string());
+			this.authToken = ("Bearer " + (resp.get("access_token")).toString());
+			System.out.println(this.authToken);
+
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
 	
 	
 	
