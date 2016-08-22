@@ -157,7 +157,7 @@ app.controller('chartController',['$scope', '$interval', function($scope, $inter
 
     	    ]}
 
-    	    var pastMin = 10	;
+    	    var pastMin = 45;
     	    var numDataPoints = pastMin * 60; //mins
     	    $scope.dataSource.categories[0].category = getXAxisPoints();
     	    function getXAxisPoints(){
