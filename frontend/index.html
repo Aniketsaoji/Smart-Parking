@@ -195,7 +195,7 @@ app.controller('chartController',['$scope', '$interval', function($scope, $inter
 
 		$scope.currentPrice = 3;
 		$interval(function(){
-			var url = "https://smart-parking.run.aws-usw02-pr.ice.predix.io/price";
+			var url = "https://smart-parking-v2.run.aws-usw02-pr.ice.predix.io/price";
 			$.ajax({
   				url: url,
   				success: function(response){
@@ -209,7 +209,7 @@ app.controller('chartController',['$scope', '$interval', function($scope, $inter
 			var endTime = new Date().getTime()- 3 * 60 * 1000;
 			var startTime = new Date().getTime() - 15 * 60 * 1000;
 			var reqParams = "start=" + startTime+ "&end=" + endTime;
-			var url = "https://smart-parking.run.aws-usw02-pr.ice.predix.io/events";
+			var url = "https://smart-parking-v2.run.aws-usw02-pr.ice.predix.io/events";
 			$.ajax({
   				url: url,
   				data: reqParams,

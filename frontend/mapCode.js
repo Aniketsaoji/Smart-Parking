@@ -19,7 +19,7 @@ $(function() {
       //Dev key: AIzaSyDuNNvv4iy7BTgDj_MmF0o2f6OD-SGE41Y
       //settings variable to hold common information
       var symbols = [];
-      var locaitonsURL = "https://smart-parking.run.aws-usw02-pr.ice.predix.io/parkingDetails";
+      var locaitonsURL = "https://smart-parking-v2.run.aws-usw02-pr.ice.predix.io/parkingDetails";
 
       var settings = {
         shape: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
