@@ -40,7 +40,7 @@ public class RuleEngineService {
 	long end;
 	long start;
 	
-	String authToken = "Bearer eyJhbGciOiJSUzI1NiJ9.eyJqdGkiOiJhYTVjMjhjYy0xZDcxLTRiOTItYjM0MS05ZTIxYjY3MGE0MDAiLCJzdWIiOiJhZG1pbiIsInNjb3BlIjpbImNsaWVudHMucmVhZCIsImNsaWVudHMuc2VjcmV0IiwiaWRwcy53cml0ZSIsInVhYS5yZXNvdXJjZSIsImllLXBhcmtpbmcuem9uZXMuMzczYjMwZjUtYmQ4ZS00MGE4LTlkYzItYmM3M2IyN2QzYzI4LmFkbWluIiwiY2xpZW50cy5hZG1pbiIsImllLXRyYWZmaWMuem9uZXMuMTMzM2U5OTMtZWYwZS00NGRmLWEyMTMtMjRjMTYwMzJhZDJiLnVzZXIiLCJzY2ltLnJlYWQiLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EuYWRtaW4iLCJjbGllbnRzLndyaXRlIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgudXNlciIsImlkcHMucmVhZCIsInNjaW0ud3JpdGUiXSwiY2xpZW50X2lkIjoiYWRtaW4iLCJjaWQiOiJhZG1pbiIsImF6cCI6ImFkbWluIiwiZ3JhbnRfdHlwZSI6ImNsaWVudF9jcmVkZW50aWFscyIsInJldl9zaWciOiI1YzYyZThmNyIsImlhdCI6MTQ3MDUzNzczNCwiZXhwIjoxNDcwNTgwOTM0LCJpc3MiOiJodHRwczovLzE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYS5wcmVkaXgtdWFhLnJ1bi5hd3MtdXN3MDItcHIuaWNlLnByZWRpeC5pby9vYXV0aC90b2tlbiIsInppZCI6IjE2MmI2ZWNlLTg5MTAtNDY1MC05MmViLTQ4YWFjZDhiYzZjYSIsImF1ZCI6WyJhZG1pbiIsImNsaWVudHMiLCJpZHBzIiwidWFhIiwiaWUtcGFya2luZy56b25lcy4zNzNiMzBmNS1iZDhlLTQwYTgtOWRjMi1iYzczYjI3ZDNjMjgiLCJpZS10cmFmZmljLnpvbmVzLjEzMzNlOTkzLWVmMGUtNDRkZi1hMjEzLTI0YzE2MDMyYWQyYiIsInNjaW0iLCJ6b25lcy4xNjJiNmVjZS04OTEwLTQ2NTAtOTJlYi00OGFhY2Q4YmM2Y2EiXX0.A_oc8pQktcmXHQ_EK3yf9Fm_TQHJj5nIQ1RHGRClo8k8N1j45MNLpig3V-OfT4FIiquSJH-ch4vcY-RxM2wSrIHTcBJ4fj_W3wTNV35ZWsDxO9yOoRBucO78Dkxs0YBHJTXlZMXvLGto1slzpdMqeKqLxVRt3XHYagqz7eP8pV5lXN4_oJUVT8LQnB6B_L6796TDeBojzshmbPS6-2fJ3tMcFDP9-3JKLBfQ9n4yBr50QyRomHqBC6_j378VX7N2I_ghIbDehM6n7F1VEdD9GINDEJwYoUQ-jW6QoF-gyn_8y0cfwoZCJXo04WxqCfAO9BQX5DFxbclFvB5xtxT6MA";
+	String authToken = "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImxlZ2FjeS10b2tlbi1rZXkiLCJ0eXAiOiJKV1QifQ.eyJqdGkiOiI3ZDkwZDBhNTJiYjA0ZTBiYjc2OTlhOGRjNzM1MTc3MSIsInN1YiI6InBhcmtpbmdfdGVzdCIsInNjb3BlIjpbInVhYS5yZXNvdXJjZSIsIm9wZW5pZCIsInVhYS5ub25lIiwiaWUtcGFya2luZy56b25lcy5kZWFkZjk5NC02ZDIxLTRlNmMtYWNjOC05N2RjM2QyOWU0ZjUudXNlciJdLCJjbGllbnRfaWQiOiJwYXJraW5nX3Rlc3QiLCJjaWQiOiJwYXJraW5nX3Rlc3QiLCJhenAiOiJwYXJraW5nX3Rlc3QiLCJncmFudF90eXBlIjoiY2xpZW50X2NyZWRlbnRpYWxzIiwicmV2X3NpZyI6ImViNTg0MjZjIiwiaWF0IjoxNDcyODYyODgzLCJleHAiOjE0NzI5MDYwODMsImlzcyI6Imh0dHBzOi8vNzk1ZTAwMmItNjVjYi00ODNiLWFkZmUtY2M2ZDdiMjMwYTVjLnByZWRpeC11YWEucnVuLmF3cy11c3cwMi1wci5pY2UucHJlZGl4LmlvL29hdXRoL3Rva2VuIiwiemlkIjoiNzk1ZTAwMmItNjVjYi00ODNiLWFkZmUtY2M2ZDdiMjMwYTVjIiwiYXVkIjpbInBhcmtpbmdfdGVzdCIsInVhYSIsIm9wZW5pZCIsImllLXBhcmtpbmcuem9uZXMuZGVhZGY5OTQtNmQyMS00ZTZjLWFjYzgtOTdkYzNkMjllNGY1Il19.wTuU9sRl3hwsXnvbs0VaeQp4fQEDjm5NBxwlkU1JeM_wFg89phhffrQj2vIjYIxvn9yk5EUxkfa8lgmCP2VFWT_hqu5gSOi5biFYdivShvMRTuxkPv2QUmdsemsag-Td8slibVay_-cliJ4lEpNRpjgxbRC3Nw1YIfqkzk0Ro0TrSXH0aP3jv1YB9P0ClpOzwd80PQRR3qVUkRkAU1EtWL7M9kTkfuMN_b0XhSYMshXJcWo1sAawryx1pfp1nrEYq_mVpB0xQlPHzcx4TbxhRVDmr1a-AtlSdQloR57xP5xwQ-QnxqcsAxdRfr8BST9k3gkF0f69UlFfcp69d9o_Mw";
 //	private static ParkingSpotsRepository repo;
 
 	
@@ -115,7 +115,7 @@ public class RuleEngineService {
 		
 		HttpHeaders header = new HttpHeaders();
         header.add("Authorization", authToken);
-        header.add("Predix-Zone-Id", "373b30f5-bd8e-40a8-9dc2-bc73b27d3c28");
+        header.add("Predix-Zone-Id", "deadf994-6d21-4e6c-acc8-97dc3d29e4f5");
         HttpEntity entity = new HttpEntity(header);
         RestTemplate rest = new RestTemplate();
         
@@ -208,7 +208,7 @@ public class RuleEngineService {
 		
 		HttpHeaders header = new HttpHeaders();
 		header.add("Authorization", authToken);
-		header.add("Predix-Zone-Id", "373b30f5-bd8e-40a8-9dc2-bc73b27d3c28");
+		header.add("Predix-Zone-Id", "deadf994-6d21-4e6c-acc8-97dc3d29e4f5");
 		HttpEntity entity  = new HttpEntity(header);
 		RestTemplate rest = new RestTemplate();
 		String url = "https://ie-parking.run.aws-usw02-pr.ice.predix.io/v1/locations/search?q=location-type:PARKING_SPOT&bbox=0.716:-117.163,82.720:117.263&size=40&page=0";
@@ -289,12 +289,14 @@ public class RuleEngineService {
 		OkHttpClient client = new OkHttpClient();
 
 		Request request = new Request.Builder()
-		  .url("https://162b6ece-8910-4650-92eb-48aacd8bc6ca.predix-uaa.run.aws-usw02-pr.ice.predix.io/oauth/token?grant_type=client_credentials")
+		  .url("https://795e002b-65cb-483b-adfe-cc6d7b230a5c.predix-uaa.run.aws-usw02-pr.ice.predix.io/oauth/token?grant_type=client_credentials")
 		  .get()
-		  .addHeader("authorization", "Basic YWRtaW46YXBwdWt1dHRhbg==")
+		  .addHeader("authorization", "Basic cGFya2luZ190ZXN0OnBhcmtpbmc=")
 		  .addHeader("cache-control", "no-cache")
-		  .addHeader("postman-token", "1d7de9c8-2c0c-7579-9c1c-dc592f30a33f")
+		  .addHeader("postman-token", "59d2d4b2-5d52-c3aa-9796-ab621287acfe")
 		  .build();
+
+		// Response response = client.newCall(request).execute();
 
 		Response response;
 		JacksonJsonParser parser = new JacksonJsonParser();

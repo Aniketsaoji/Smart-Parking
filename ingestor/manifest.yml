@@ -1,6 +1,6 @@
 ---
 applications:
-  - name: Smart-Parking
+  - name: Smart-Parking-V2
     buildpack: java_buildpack
     path: target/Smart-Parking-0.1.0.jar
     memory: 1G
