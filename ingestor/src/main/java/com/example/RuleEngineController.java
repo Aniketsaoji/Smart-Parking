@@ -26,8 +26,8 @@ public class RuleEngineController {
     @Autowired
     public RuleEngineController(RuleEngineService service) {
         this.service = service;
-//        service.initialize();
-//        service.getParkingEvents();
+        // this.service.initialize();
+        // this.service.getParkingEvents();
     }
     
     @CrossOrigin(origins = "https://bettertraffic-test-app.run.aws-usw02-pr.ice.predix.io")

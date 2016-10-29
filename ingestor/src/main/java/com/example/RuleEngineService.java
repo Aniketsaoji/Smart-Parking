@@ -213,7 +213,7 @@ public class RuleEngineService {
 		RestTemplate rest = new RestTemplate();
 		String url = "https://ie-parking.run.aws-usw02-pr.ice.predix.io/v1/locations/search?q=location-type:PARKING_SPOT&bbox=0.716:-117.163,82.720:117.263&size=40&page=0";
         String locationQueryResponse = rest.exchange(url, HttpMethod.GET, entity, String.class).getBody();
-
+        System.out.println(locationQueryResponse);
 		JacksonJsonParser parser = new JacksonJsonParser();
 		Map<String, Object> parsedData = parser.parseMap(locationQueryResponse);
 		LinkedHashMap locations = (LinkedHashMap)parsedData.get("_embedded");
