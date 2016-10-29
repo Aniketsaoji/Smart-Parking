@@ -73,11 +73,7 @@ function addMarker(location) {
       }
 
       function getColor(state, chance){
-        if(state == "true")
-        {
           return rgbToHex(mapVal(chance/10, 0, 1, 255, 0), mapVal(chance/10, 0, 1, 0, 255), 0);
-        }
-        return rgbToHex(0, mapVal(chance/10, 0, 1, 255, 0), mapVal(chance/10, 0, 1, 0, 255));
       }
 
       function mapVal(value, inMin, inMax, outMin, outMax)
